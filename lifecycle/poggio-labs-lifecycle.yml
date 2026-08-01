@@ -1,0 +1,17 @@
+generated: '2026-07-20'
+method: searched
+source: https://poggio.io/docs and https://status.poggio.io/
+versioning:
+  scheme: uri-path
+  current: v2
+  docs: https://poggio.io/docs/api/v2
+status_page: https://status.poggio.io/
+trust_center: https://trust.poggio.io
+deprecation:
+  # No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+  policy_url: null
+  sunset_header: null
+sla:
+  # No public SLA document located.
+  url: null
+deprecated_operations: []

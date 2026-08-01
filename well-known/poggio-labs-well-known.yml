@@ -1,0 +1,31 @@
+generated: '2026-07-20'
+method: searched
+source: live probes of /.well-known/ on Poggio API + MCP hosts
+hosts:
+- host: https://api.poggio.io
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: poggio-labs-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: poggio-labs-oauth-protected-resource.json
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+- host: https://mcp.poggio.io
+  documents:
+  - path: /.well-known/oauth-protected-resource/mcp
+    status: 200
+    file: poggio-labs-mcp-oauth-protected-resource.json
+  - path: /.well-known/oauth-authorization-server/mcp
+    status: 404
+- host: https://poggio.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404

@@ -1,0 +1,132 @@
+# Poggio
+
+> Poggio is an AI revenue intelligence platform for enterprise sales teams. It combines deep research AI agents with a unified context engine that connects CRM, call recordings, documents, and real-time web intelligence to arm sellers with always-current account knowledge.
+
+## For AI Agents
+
+- Start with this file for site structure
+- Append `.md` to any page URL for markdown content (e.g. `https://poggio.io/product.md`)
+- Use `/api/search-all?q=<keyword>` for keyword search (see format below)
+- For full content, fetch `/llms-full.txt`
+- For API integration, see [MCP documentation](https://poggio.io/docs/mcp.md)
+
+## Search API
+
+`GET /api/search-all?q=<keyword>`
+
+Keyword-based search across documentation and blog posts. Minimum query length: 2 characters. Results ranked by keyword match count. Optional `limit` parameter (e.g. `?q=salesforce&limit=10`).
+
+Response format:
+```json
+{"query":"...","keywords":["extracted","terms"],"count":2,"results":[{"title":"...","url":"...","markdownUrl":"...","excerpt":"...","type":"doc|post","relevance":2}]}
+```
+
+Each result includes a `markdownUrl` you can fetch directly for full content.
+
+## Pages
+
+- [Home](https://poggio.io/index.md): Poggio overview, value pillars, and how it works
+- [Platform](https://poggio.io/platform.md): AI agents, context engine, delivery, and security details
+- [Product](https://poggio.io/product.md): Real-time intelligence and account plans in Slack and Salesforce
+- [Slack](https://poggio.io/product/slack.md): Slack-native intelligence and account plans for sellers
+- [Salesforce](https://poggio.io/product/salesforce.md): Salesforce-native account intelligence and account plans
+- [Agents](https://poggio.io/product/agents.md): Intelligence and context for every agent surface via MCP and REST APIs
+- [Transform](https://poggio.io/transform.md): A ten-factor methodology for revenue in the intelligence age
+- [Transform Assessment](https://poggio.io/transform/assessment.md): A ten-factor self-assessment scoring your organization on the path to becoming an AI-native revenue organization
+- [About](https://poggio.io/about.md): Company story, values, and investors
+- [Resources](https://poggio.io/resources.md): Blog index
+- [Brand Kit](https://poggio.io/brand.md): Logo usage guidelines, color palette, typography, and font downloads
+- [Brand Voice Guide](https://poggio.io/brand/voice.md): Voice principles, tone registers, audience lenses, and language rules for writing as Poggio
+
+## Documentation
+
+- [Overview (/docs)](https://poggio.io/docs.md): Everything you need to integrate with and use Poggio
+- [The Poggio Enterprise Model](https://poggio.io/docs/admin/enterprise-model.md): Hierarchical structure for advanced control and management across multiple workspaces
+- [Gong Integration](https://poggio.io/docs/admin/gong.md): Connect Gong to Poggio so agents can use call intelligence for account context and coaching
+- [Highspot Integration](https://poggio.io/docs/admin/highspot.md): Connect Poggio to Highspot for enhanced account planning with your enablement content
+- [Model Context Protocol (MCP)](https://poggio.io/docs/admin/mcp.md): Overview of the Model Context Protocol and how Poggio uses it
+- [Salesforce Packaged Integration](https://poggio.io/docs/admin/salesforce-package.md): Install and configure the Poggio managed package for Salesforce to bring account intelligence, POVs, and account plans directly into your CRM and Agentforce workflows.
+- [SSO Configuration Using SAML 2.0](https://poggio.io/docs/admin/saml.md): Configure SAML 2.0 single sign-on for enterprise admins
+- [Provision Users with SCIM](https://poggio.io/docs/admin/scim.md): Automate user provisioning with SCIM 2.0
+- [Poggio Slack App](https://poggio.io/docs/admin/slack-app.md): Set up and use the Poggio Slack integration
+- [Workspace Tailoring](https://poggio.io/docs/admin/workspace-tailoring.md): Customize task output to reflect your company's ICP, positioning, and unique value props
+- [Overview (api)](https://poggio.io/docs/api.md): Full endpoint reference for the Poggio API
+- [Extending Poggio with MCP Servers](https://poggio.io/docs/developer/extending-mcp.md): Connect Poggio to external MCP servers to extend your AI agents' capabilities
+- [Connecting to Poggio MCP](https://poggio.io/docs/mcp.md): Connect external AI clients to the Poggio MCP server
+- [Poggio MCP Tools](https://poggio.io/docs/mcp/tool-specs.md): Available tools on the Poggio MCP server
+- [Overview (api/well-known)](https://poggio.io/docs/api/well-known.md): Well-Known endpoint reference for the Poggio API
+- [Oauth Authorization Server Metadata](https://poggio.io/docs/api/well-known/oauth_authorization_server_metadata.md): OAuth 2.0 Authorization Server Metadata Discovery Endpoint.
+Per RFC 8414 and MCP OAuth specification, this endpoint provides
+authorization server metadata for client discovery.
+Returns:
+    Authorization server metadata including supported endpoints,
+    grant types, and PKCE methods.
+- [Oauth Protected Resource Metadata](https://poggio.io/docs/api/well-known/oauth_protected_resource_metadata.md): OAuth 2.0 Protected Resource Metadata Discovery Endpoint.
+Per RFC 8414 Section 5 and MCP OAuth specification, this endpoint
+provides metadata for protected resources.
+Returns:
+    Protected resource metadata including resource URI and
+    authorization server location.
+- [Overview (api/v2)](https://poggio.io/docs/api/v2.md): V2 endpoint reference for the Poggio API
+- [Create or Get Account](https://poggio.io/docs/api/v2/accounts/v2_create_account.md): Create a new account for the given domain, or return the existing one. Optionally triggers deep research to enrich the account with comprehensive data. Returns a 201 when an account is created, 200 if the account already exists.
+- [Recreate Account Pages](https://poggio.io/docs/api/v2/accounts/v2_recreate_account_pages.md): Recreate all pages for an existing account. Useful for refreshing stale content for a given account domain.
+- [Fetch Context Item](https://poggio.io/docs/api/v2/context/v2_context_fetch.md): Fetch the full content of a specific item by ID. Returns the item with its title, text, URL, and any associated metadata.
+- [Search Context](https://poggio.io/docs/api/v2/context/v2_context_search.md): Search across all indexed content in your organization. Returns matching items with titles, text excerpts, and URLs.
+- [Get Account Digest](https://poggio.io/docs/api/v2/digest/v2_get_account_digest.md): Returns the top-ranked news stories and contact changes for an account from a configurable time window.
+- [Register OAuth Client](https://poggio.io/docs/api/v2/oauth/v2_register_client.md): Register an OAuth client dynamically.
+- [Create OAuth Token](https://poggio.io/docs/api/v2/oauth/v2_token.md): Exchange an authorization code, client credentials, or refresh token for an access token.
+- [Batch Create Or Refresh Salesforce Accounts](https://poggio.io/docs/api/v2/salesforce/batch_create_or_refresh_salesforce_accounts.md): API reference for Batch Create Or Refresh Salesforce Accounts
+- [Batch Write Account Plan](https://poggio.io/docs/api/v2/salesforce/batch_write_account_plan.md): Write or update multiple Salesforce account plans in a single request.
+- [Create Or Refresh Salesforce Account](https://poggio.io/docs/api/v2/salesforce/create_or_refresh_salesforce_account.md): API reference for Create Or Refresh Salesforce Account
+- [Trigger Account Pages](https://poggio.io/docs/api/v2/salesforce/trigger_account_pages.md): API reference for Trigger Account Pages
+- [Delete Salesforce Integration User](https://poggio.io/docs/api/v2/salesforce/v2_delete_salesforce_integration_user.md): Delete the Salesforce integration user registration for your organization.
+- [Get Salesforce Integration User](https://poggio.io/docs/api/v2/salesforce/v2_get_salesforce_integration_user.md): Get the Salesforce integration user registration for your organization.
+- [Register Salesforce Integration User](https://poggio.io/docs/api/v2/salesforce/v2_register_salesforce_integration_user.md): Register a Salesforce integration user to enable Poggio to connect to your Salesforce organization.
+- [Update Salesforce Integration User](https://poggio.io/docs/api/v2/salesforce/v2_update_salesforce_integration_user.md): Update the Salesforce integration user registration for your organization.
+- [Write Account Plan](https://poggio.io/docs/api/v2/salesforce/write_account_plan.md): Write or update a Salesforce account plan.
+- [Chat](https://poggio.io/docs/api/v2/superagent/v2_chat.md): Send a message to Poggio and receive a response.
+- [Create Third Party Registration](https://poggio.io/docs/api/v2/third_party_registration/v2_create_third_party_registration.md): Register a new third-party integration (e.g., Salesforce, Gong, Highspot) for your organization.
+- [Delete Third Party Registration](https://poggio.io/docs/api/v2/third_party_registration/v2_delete_third_party_registration.md): Permanently delete a third-party registration by ID.
+- [Get Third Party Registration](https://poggio.io/docs/api/v2/third_party_registration/v2_get_third_party_registration.md): Get the full details of a specific third-party registration by ID.
+- [List Third Party Registrations](https://poggio.io/docs/api/v2/third_party_registration/v2_list_third_party_registrations.md): List all third-party registrations for your organization. Optionally filter by registration name.
+- [Update Third Party Registration](https://poggio.io/docs/api/v2/third_party_registration/v2_update_third_party_registration.md): Update an existing third-party registration. You can update the name, payload, or both.
+- [Get My Workspaces](https://poggio.io/docs/api/v2/users/v2_get_my_workspaces.md): Returns the workspaces the authenticated user is a member of.
+
+## Blog
+
+- [Poggio Intelligence in Slack, Salesforce, and Agentforce](https://poggio.io/post/poggio-intel-now-in-slack-salesforce.md) (2026-04-14): New Slack app, managed package, and MCP integration put Poggio intelligence and agents natively in daily GTM workflows where sellers and agents work
+
+- [The 5 things the top 1% of B2B sellers do consistently well](https://poggio.io/post/5-things-top-B2B-sellers-do-well.md) (2026-07-09): From closing bigger deals faster to exceeding quota and earning a ticket to Sales Club, the best of the best B2B sellers regularly outperform their peers. Here are the 5 things the top 1% of B2B sellers do consistently well.
+- [New Poggio Pro Plan: $49/user/month](https://poggio.io/post/new-poggio-pro-plan.md) (2026-06-18): Poggio's new Pro Plan gives you more options to scale Revenue AI predictably across your team, starting at just $49/user/month with a credit card.
+- [How AI-native is your revenue org? Take the self assessment](https://poggio.io/post/how-ai-native-is-your-revenue-org.md) (2026-06-10): 5 min self assessment helps revenue leaders understand where their org is strong, where they have gaps, and what to address first on the journey to AI-native where agents augment human performance to drive efficiency and growth.
+- [Poggio revenue agents now native in Slack, Salesforce, and Agentforce](https://poggio.io/post/poggio-revenue-agents-launch-on-agentexchange.md) (2026-04-14): New Slack app, managed package, and MCP integration put Poggio agents natively in daily GTM workflows, automating account research, prioritization, planning, next actions, and more to transform how revenue organizations drive growth
+- [Lenovo doubles down on client success, aligns GTM to deliver differentiated value with Poggio](https://poggio.io/post/lenovo-aligns-gtm-to-deliver-value-with-poggio.md) (2026-04-13): Poggio AI agents identify Lenovo’s best deals, surface real-time client priorities, and map solutions to solving them, positioning sellers to drive customer success
+- [New voice mode experience Poggio Coach Agent beta now available](https://poggio.io/post/new-voice-mode-experience-poggio-coach-agent-beta-now-available.md) (2026-02-09): Get conversational coaching from Poggio’s Coach Agent, now in beta testing
+- [Fortune Global 500 IT and business services leader transforms its GTM to better serve clients with Poggio](https://poggio.io/post/fortune-global-500-it-and-business-services-leader-transforms-its-gtm-to-better-serve-clients-with-poggio.md) (2026-01-06): Poggio’s AI agents operate as teammates to sellers, delivering always-current, always-relevant account plans, sales assets, coaching, and more to help sellers solve customer challenges.
+- [Enhanced Chat puts Poggio AI agents center stage to guide seller action](https://poggio.io/post/enhanced-chat-puts-poggio-ai-agents-center-stage-to-guide-seller-action.md) (2025-12-18): Poggio's new Chat UI makes it easy for sellers to interact with agents and get guidance on the best sales plays to win.
+- [$70B tech leader doubles down on customer success, aligns GTM to deliver differentiated value with Poggio](https://poggio.io/post/70b-tech-leader-doubles-down-on-customer-success-aligns-gtm-to-deliver-differentiated-value-with-poggio.md) (2025-12-17): Poggio AI agents identify the company’s best deals, surface real-time client priorities, and map solutions to solving them, positioning sellers to drive customer success.
+- [Fortune 500 cybersecurity leader transforms GTM with Poggio](https://poggio.io/post/fortune-500-cybersecurity-leader-transforms-gtm-with-poggio.md) (2025-12-15): Poggio’s Revenue AI platform delivers deep customer intelligence to help revenue leaders standardize their value selling sales motion to position sellers to break into new accounts and accelerate deals.
+- [Introducing 'Poggio Home': Consolidated news + updates across your accounts](https://poggio.io/post/introducing-poggio-home-consolidated-news-updates-across-your-accounts.md) (2025-11-10): Introducing 'Poggio Home': Consolidated news + updates across your accounts
+- [Poggio POVs + Highspot: Arming sellers and AI agents with the best sales plays](https://poggio.io/post/poggio-povs-highspot-arming-sellers-and-ai-agents-with-the-best-sales-plays.md) (2025-10-14): Direct integration brings Highspot content into Poggio POVs to position sellers and agents to win with the right solution and value message tailored to the right stakeholder.
+- [Poggio and Highspot Join to Arm Enterprise Sellers and AI Agents with Best Sales Plays—the Right Solution and Value Message to the Right Buyers—to Close More Deals](https://poggio.io/post/poggio-and-highspot-join-to-arm-enterprise-sellers-and-ai-agents-with-best-sales-plays--the-right-solution-and-value-message-to-the-right-buyers--to-close-more-deals.md) (2025-10-14): Direct integration brings Highspot content into Poggio POVs, further helping revenue leaders deeply understand customer challenges and position their sellers and AI agents to solve them.
+- [Traditional GTM planning is failing B2B revenue teams](https://poggio.io/post/traditional-gtm-planning-is-failing-b2b-revenue-teams.md) (2025-09-25): The B2B GTM planning process is broken. With most enterprises on the cusp of Q4 planning, now's the time to switch to modern GTM orchestration—that’s both intelligent and continuous—to scale sales excellence and accelerate revenue growth.
+- [Introducing Saved Views for your accounts](https://poggio.io/post/introducing-saved-views-for-your-accounts.md) (2025-09-22): Save the preferred setup of your Accounts table—filters, sorting, and column arrangement—to instantly jump to the accounts that matter most.
+- [Poggio again named a High Performer in G2 Grid reports for sales intelligence and AI sales assistant software](https://poggio.io/post/poggio-again-named-a-high-performer-in-g2-grid-r-reports-for-sales-intelligence-and-ai-sales-assistant-software.md) (2025-09-16): Poggio receives high marks from G2 users for ease of use, ease of set up, performance and reliability, quality of support, and product direction, reinforcing Poggio’s value among enterprise revenue teams.
+- [Fixing intent signal selling: Moving from activity- to fit-based prioritization](https://poggio.io/post/fixing-intent-signal-selling-moving-from-activity-to-fit-based-prioritization.md) (2025-08-08): The promise was simple: intent signals would revolutionize how we prioritize accounts and drive revenue. The reality? Most revenue teams are drowning in noise, chasing ghosts, and watching conversion rates flatline. It's time for a fundamental shift in how we think about account prioritization at scale, evolving from activity- to fit-based account prioritization.
+- [OODA loops and the agentic revenue organization of the future](https://poggio.io/post/ooda-loops-and-the-revenue-org.md) (2025-08-04): From reactive processes to autonomous intelligence
+- [The RevOps revolution: how context engineering with MCP transforms customer engagement](https://poggio.io/post/revops-context-engineering-with-mcp.md) (2025-07-25): Why the future of revenue operations lies in unifying your data ecosystem, and how AI agents are making it possible at scale
+- [Introducing Poggio custom attributes](https://poggio.io/post/introducing-poggio-custom-attributes.md) (2025-07-09): AI-powered account prioritization, driven by your ideal point of view
+- [Enterprise sales AI: why leading organizations buy vs. build](https://poggio.io/post/enterprise-sales-ai-why-leading-organizations-buy-vs-build.md) (2025-07-03): A roadmap for revenue leaders in the age of intelligence
+- [Poggio named High Performer in G2 Grid® reports for Sales Intelligence, Value Selling Tools, and AI Sales Assistant Software](https://poggio.io/post/poggio-named-high-performer-g2-summer-2025.md) (2025-07-03): Poggio receives high marks for ease of use, ease of set up, quality of support, and product direction, reinforcing Poggio’s leadership in AI-powered account intelligence for revenue teams.
+- [State of POVs: seller behavior makes the case for AI-powered account intelligence](https://poggio.io/post/state-of-povs-seller-behavior-makes-the-case-for-ai-powered-account-intelligence.md) (2025-06-09): As the pioneer and leader in AI-powered account intelligence, we have an inside view into the state of transformational AI’s use in Sales. That’s because every new user who creates a Poggio account also completes a survey that helps us understand where GTM teams are spending their time, statistics about their processes, and the state of their account intelligence prior to deploying Poggio.
+- [Thinking strategically about sales AI](https://poggio.io/post/thinking-strategically-about-sales-ai.md) (2025-06-07): Strategic sales AI implementation requires a fundamental shift from tactical automation to transformational intelligence. Organizations must move beyond viewing AI as a collection of tools to embracing it as a comprehensive capability that reshapes how revenue teams understand customers, predict behaviors, and optimize outcomes. 
+- [Mitigating AI risk](https://poggio.io/post/mitigating-ai-risk.md) (2025-06-06): Successful AI implementation requires strategies that mitigate potential technical, operational, and strategic risks. Many enterprise organizations are already creating centralized AI committees or councils to guide their organization to the AI-first enterprise. These AI councils are working to mitigate risk across several key areas.
+- [Debunking sales AI myths](https://poggio.io/post/debunking-sales-ai-myths.md) (2025-06-06): Revenue leaders are confronted with having to debunk common misconceptions that have created confusion and misunderstanding about AI among their peers and teams. These are the most common myths and their realities to equip CROs for these conversations.
+- [Why enterprise AI needs a cross-platform governance layer](https://poggio.io/post/why-enterprise-ai-needs-governance-layer.md) (2025-05-31): The agent ecosystem awaits its Kubernetes moment.
+- [POVs: Critical for people today, existential for agents tomorrow](https://poggio.io/post/povs-critical-for-people-today-existential-for-agents-tomorrow.md) (2025-05-15): Preparing for an agent-driven future.
+- [Why I joined Poggio](https://poggio.io/post/greg-perotto-why-i-joined-poggio.md) (2025-05-06): The B2B fit trifecta: product, market, passion.
+- [General tools, general results](https://poggio.io/post/general-tools-general-results.md) (2025-04-26): Why a ChatGPT subscription isn’t a sales transformation strategy.
+- [How Dialpad achieved 70% more revenue with 20% less pipeline](https://poggio.io/post/dialpad-success-story.md) (2025-04-03): Poggio delivers the account intelligence Dialpad’s enterprise sellers need to understand each customer and confidently sell on value.
+- [Poggio named a High Performer in G2 Grid® for AI Sales Assistant Software](https://poggio.io/post/2025-poggio-high-performer-g2-grid.md) (2025-03-25): Poggio receives high marks for ease of use, ease of set up, quality of support, and product direction, reinforcing Poggio’s leadership in AI-powered Account Intelligence for Sales.
+- [More admin control with fine-grained user roles](https://poggio.io/post/admin-user-roles.md) (2024-07-31): New access tooling for RevOps teams and Poggio admins.
+- [Introducing Poggio Digest](https://poggio.io/post/introducing-poggio-digest.md) (2024-07-24): Real-time account intelligence at your fingertips.

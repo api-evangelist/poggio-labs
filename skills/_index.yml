@@ -1,0 +1,12 @@
+generated: '2026-07-20'
+method: generated
+source: mcp/poggio-labs-mcp.yml and https://poggio.io/docs/api/v2 (operations grounded in llms/poggio-labs-llms.txt)
+skills:
+- file: poggio-labs-account-intelligence.md
+  name: Research a company account with Poggio
+  api: mcp/poggio-labs-mcp.yml
+  operations: [create_account, search, fetch, ask_poggio]
+- file: poggio-labs-salesforce-account-plan.md
+  name: Write a Salesforce account plan with Poggio
+  api: https://poggio.io/docs/api/v2
+  operations: [create_or_refresh_salesforce_account, trigger_account_pages, write_account_plan, batch_write_account_plan]

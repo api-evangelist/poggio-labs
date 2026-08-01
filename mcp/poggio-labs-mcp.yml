@@ -1,0 +1,55 @@
+generated: '2026-07-20'
+method: searched
+status: published
+source: https://poggio.io/docs/mcp
+server:
+  name: poggio
+  transport: http
+  url: https://mcp.poggio.io/mcp
+  version: 1.0.05
+authentication:
+  # Per mcp.poggio.io/.well-known/oauth-protected-resource/mcp (authorization
+  # server = https://api.poggio.io/). bearer_methods_supported: [header].
+  methods:
+  - oauth-dynamic-client-registration   # AI desktop clients (Claude Desktop, Cursor, Windsurf)
+  - oauth-authorization-code            # user-acting custom apps
+  - oauth-client-credentials            # server-to-server
+  - bearer-token                        # quick prototyping / simple scripts
+  authorization_server: https://api.poggio.io/
+docs:
+  connecting: https://poggio.io/docs/mcp
+  tool_specs: https://poggio.io/docs/mcp/tool-specs
+  extending: https://poggio.io/docs/developer/extending-mcp
+tools:
+- name: search
+  description: Returns a list of account intelligence documents for the supplied query.
+  parameters:
+  - name: query
+    type: string
+    description: Domain name of the target company.
+- name: fetch
+  description: Returns the full text of the requested account intelligence document.
+  parameters:
+  - name: id
+    type: string
+    description: Document ID from search results.
+- name: create_account
+  description: Establishes a new account in your Poggio workspace with immediate intelligence gathering.
+  parameters:
+  - name: account_domain
+    type: string
+    description: Company domain name.
+- name: recreate_account_pages
+  description: Recreates all pages for an existing account using current default templates.
+  parameters:
+  - name: account_domain
+    type: string
+    description: Company domain name.
+- name: ask_poggio
+  description: >-
+    Leverages Poggio's AI assistant with access to web search, Salesforce, Gong
+    transcripts, and company intelligence for comprehensive research.
+  parameters:
+  - name: question
+    type: string
+    description: Research query or analysis request.

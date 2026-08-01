@@ -1,7 +1,34 @@
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1
 aid: poggio-labs
 name: Poggio Labs
-description: 'Poggio Labs is a company surfaced as a portfolio company of accel and added to the API Evangelist
-  network as a stub for enrichment. Sector: ai. This profile is a lead awaiting the enrichment pipeline.'
+description: >-
+  Poggio (Poggio Labs) is an AI revenue intelligence platform for enterprise
+  sales teams — a "Revenue Superagent" that unlocks Salesforce investment by
+  combining deep-research AI agents with a unified context engine connecting
+  CRM, call recordings (Gong), documents, and real-time web intelligence to arm
+  sellers with always-current account knowledge, prioritization, relationship
+  maps, and automated account plans. Poggio exposes its intelligence
+  programmatically through a versioned REST API (v2) and a hosted Model Context
+  Protocol (MCP) server, both secured with OAuth 2.0 (authorization code, client
+  credentials, refresh token) and dynamic client registration, plus native Slack,
+  Salesforce/Agentforce, Highspot, and Gong integrations. Backed by Accel.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://poggio.io/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/poggio-labs/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,16 +38,89 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
 - Ai
-apis: []
+- Revenue Intelligence
+- Sales
+- Account Intelligence
+- CRM
+- Salesforce
+- MCP
+- AI Agents
+- Enterprise
+apis:
+- name: Poggio REST API v2
+  description: >-
+    Versioned REST API (v2) exposing Poggio account intelligence, context search,
+    account digests, the superagent chat, Salesforce account-plan writeback, and
+    third-party integration registration. Secured with OAuth 2.0 (authorization
+    code, client credentials, refresh token) and dynamic client registration;
+    organization is inferred from the access token.
+  humanURL: https://poggio.io/docs/api
+  baseURL: https://api.poggio.io/v2
+  tags:
+  - Account Intelligence
+  - Salesforce
+  - Context
+  - Superagent
+  properties:
+  - type: APIReference
+    url: https://poggio.io/docs/api/v2
+  - type: Documentation
+    url: https://poggio.io/docs/api
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: TrustCenter
+  url: security/poggio-labs-trust-center.yml
 - type: Website
-  url: https://poggiolabs.com/
+  url: https://poggio.io/
+- type: DeveloperPortal
+  url: https://poggio.io/docs
+- type: Documentation
+  url: https://poggio.io/docs
+- type: APIReference
+  url: https://poggio.io/docs/api
+- type: GettingStarted
+  url: https://poggio.io/docs
+- type: Blog
+  url: https://poggio.io/resources
+- type: Pricing
+  url: https://poggio.io/pricing
+- type: Login
+  url: https://poggio.io/app/sign-in
+- type: Support
+  url: mailto:hello@poggio.io
+- type: TermsOfService
+  url: https://poggio.io/docs/legal/terms-of-service
+- type: PrivacyPolicy
+  url: https://poggio.io/docs/legal/privacy-policy
+- type: StatusPage
+  url: https://status.poggio.io/
+- type: Compliance
+  url: https://trust.poggio.io
+- type: GitHubOrganization
+  url: https://github.com/poggiolabs
+- type: MCPServer
+  url: mcp/poggio-labs-mcp.yml
+- type: LLMsTxt
+  url: llms/poggio-labs-llms.txt
+- type: WellKnown
+  url: well-known/poggio-labs-well-known.yml
+- type: Authentication
+  url: authentication/poggio-labs-authentication.yml
+- type: Conventions
+  url: conventions/poggio-labs-conventions.yml
+- type: Lifecycle
+  url: lifecycle/poggio-labs-lifecycle.yml
+- type: Conformance
+  url: conformance/poggio-labs-conformance.yml
+- type: DomainSecurity
+  url: security/poggio-labs-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml

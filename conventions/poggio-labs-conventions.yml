@@ -1,0 +1,37 @@
+generated: '2026-07-20'
+method: searched
+source: https://poggio.io/docs/api
+authentication:
+  style: OAuth 2.0 Bearer token; organization inferred from the access token.
+  ref: authentication/poggio-labs-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v2
+  base_url: https://api.poggio.io/v2
+  docs: https://poggio.io/docs/api/v2
+idempotency:
+  # Poggio does not document a general Idempotency-Key header. The
+  # "Create or Get Account" endpoint has create-or-get (upsert) semantics:
+  # returns 201 when an account is created, 200 when it already exists.
+  idempotency_key_header: false
+  upsert_endpoints:
+  - v2_create_account   # 201 on create, 200 if the account already exists
+  - create_or_refresh_salesforce_account
+discovery:
+  well_known:
+  - /.well-known/oauth-authorization-server   # RFC 8414
+  - /.well-known/oauth-protected-resource      # RFC 9728
+  search_api: GET https://poggio.io/api/search-all?q=<keyword>&limit=<n>
+agent_access:
+  llms_txt: https://poggio.io/llms.txt
+  markdown_pages: append .md to any page URL for markdown content
+  mcp_server: https://mcp.poggio.io/mcp
+  ref: mcp/poggio-labs-mcp.yml
+error_envelope:
+  # Not documented publicly beyond HTTP status codes; see lifecycle/ + status codes
+  # surfaced per-operation in the API reference.
+  format: http-status
+cross_reference:
+  authentication: authentication/poggio-labs-authentication.yml
+  lifecycle: lifecycle/poggio-labs-lifecycle.yml
+  conformance: conformance/poggio-labs-conformance.yml
