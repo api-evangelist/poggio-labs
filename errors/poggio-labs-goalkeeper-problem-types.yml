@@ -1,0 +1,124 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/poggio-labs-goalkeeper-openapi.json (Goalkeeper API, v0.5.0)
+format: custom-json
+rfc9457: false
+envelope:
+  media_type: application/json
+  schema:
+    error: string   # required — machine-readable error identifier
+    message: string # optional — human-readable detail
+  additional_properties: false
+  note: >-
+    Goalkeeper returns its own two-field Error object on every 4xx, not
+    application/problem+json. There is no type URI, no instance, and no per-error
+    registry published, so the `error` string is the only machine-readable discriminator
+    and its value set is not documented.
+status_codes_observed: [200, 201, 202, 204, 302, 400, 401, 403, 404, 409]
+no_5xx_declared: true
+problems:
+- status: 400
+  title: The request is invalid.
+  operations: 13
+  examples: [loginWithEmail, listGoals, createGoal, getGoal]
+  remediation: Validate the request against the operation schema before retrying.
+- status: 400
+  title: The registration request is invalid.
+  operations: 1
+  examples: [registerWithEmail]
+- status: 400
+  title: The verification token is invalid or expired.
+  operations: 1
+  examples: [verifyEmail]
+  remediation: Verification tokens are single-use and expire after 24 hours; request a new one.
+- status: 400
+  title: The token request is invalid.
+  operations: 1
+  examples: [createApiToken]
+  remediation: At least one scope must be selected and expiry must be 1–365 days.
+- status: 400
+  title: The organization request is invalid.
+  operations: 2
+  examples: [createOrganization, updateCurrentOrganization]
+- status: 400
+  title: The invitation identifier is invalid.
+  operations: 2
+  examples: [revokeCurrentOrganizationInvitation, resendCurrentOrganizationInvitation]
+- status: 400
+  title: The email address or role is invalid.
+  operations: 1
+  examples: [createCurrentOrganizationInvitation]
+- status: 400
+  title: The member or role is invalid.
+  operations: 1
+  examples: [updateCurrentOrganizationMemberRole]
+- status: 400
+  title: The organization identifier is invalid.
+  operations: 1
+  examples: [switchOrganization]
+- status: 400
+  title: The token is malformed.
+  operations: 1
+  examples: [acceptOrganizationInvitation]
+- status: 401
+  title: The request is not authenticated.
+  operations: 28
+  remediation: >-
+    Present a valid Goalkeeper API token or session cookie. Tokens are checked for
+    expiration and revocation on every resolution, so a previously working token can
+    start returning 401 the moment it is revoked or expires.
+- status: 403
+  title: The credential lacks the required scope or authority.
+  operations: 12
+  examples: [listGoals, createGoal, getGoal, updateGoal]
+  remediation: >-
+    Grant the matching scope (goals:read/goals:write/labels:read/labels:write, or their
+    :all variants) and confirm the token owner still holds the organization role that
+    conferred it — authority is revalidated on every request.
+- status: 403
+  title: The request origin is not allowed.
+  operations: 7
+  examples: [loginWithEmail, registerWithEmail, verifyEmail, logoutAuthSession]
+- status: 403
+  title: Administrator access is required or the origin is not allowed.
+  operations: 2
+  examples: [updateCurrentOrganization, createCurrentOrganizationInvitation]
+- status: 403
+  title: Organization membership is required.
+  operations: 2
+  examples: [listCurrentOrganizationMembers, listCurrentOrganizationInvitations]
+- status: 404
+  title: The resource was not found or is not visible to the caller.
+  operations: 12
+  examples: [getGoal, updateGoal, deleteGoal, listGoalUpdates]
+  remediation: >-
+    404 deliberately covers both absence and invisibility — do not treat it as proof the
+    resource does not exist.
+- status: 404
+  title: The API token does not exist for the current user and active organization.
+  operations: 1
+  examples: [revokeApiToken]
+- status: 404
+  title: The invitation is expired, revoked, or already used.
+  operations: 1
+  examples: [acceptOrganizationInvitation]
+- status: 409
+  title: The requested state conflicts with an existing resource.
+  operations: 12
+  examples: [createGoalUpdate, updateGoal, createGoalLabel, updateGoalLabel]
+  remediation: >-
+    On createGoalUpdate this is the optimistic-concurrency rejection — re-read the goal,
+    take its current `revision` as `expectedRevision`, and retry with the same
+    idempotencyKey. See conventions/poggio-labs-goalkeeper-conventions.yml.
+- status: 409
+  title: An invitation for this address is already pending.
+  operations: 1
+  examples: [createCurrentOrganizationInvitation]
+- status: 409
+  title: The user already belongs to the organization.
+  operations: 1
+  examples: [acceptOrganizationInvitation]
+poggio_platform_note: >-
+  The hosted Poggio platform API (api.poggio.io/v2) publishes no error reference: its
+  generated docs pages carry only the path and method, and the site's documentation search
+  returns no error-code page. Nothing is derived for it here rather than guessing.

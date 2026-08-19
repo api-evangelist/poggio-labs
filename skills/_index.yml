@@ -1,6 +1,9 @@
-generated: '2026-07-20'
+generated: '2026-08-13'
 method: generated
-source: mcp/poggio-labs-mcp.yml and https://poggio.io/docs/api/v2 (operations grounded in llms/poggio-labs-llms.txt)
+source: >-
+  mcp/poggio-labs-mcp.yml and https://poggio.io/docs/api/v2 (operations grounded in
+  llms/poggio-labs-llms.txt); the Goalkeeper skill is grounded in
+  openapi/poggio-labs-goalkeeper-openapi.json and mcp/poggio-labs-goalkeeper-mcp.yml
 skills:
 - file: poggio-labs-account-intelligence.md
   name: Research a company account with Poggio
@@ -10,3 +13,9 @@ skills:
   name: Write a Salesforce account plan with Poggio
   api: https://poggio.io/docs/api/v2
   operations: [create_or_refresh_salesforce_account, trigger_account_pages, write_account_plan, batch_write_account_plan]
+- file: poggio-labs-goalkeeper-durable-goals.md
+  name: Track a durable goal with Goalkeeper
+  api: openapi/poggio-labs-goalkeeper-openapi.json
+  mcp: mcp/poggio-labs-goalkeeper-mcp.yml
+  operations: [listGoalLabels, createGoal, listGoals, getGoal, updateGoal, createGoalUpdate,
+    listGoalUpdates]

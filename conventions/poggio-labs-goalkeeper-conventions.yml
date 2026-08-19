@@ -1,0 +1,78 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.gkeeper.ai/docs/concepts/api-tokens, https://docs.gkeeper.ai/docs/concepts/authentication,
+  https://docs.gkeeper.ai/docs/concepts/mcp, https://docs.gkeeper.ai/docs/services and
+  openapi/poggio-labs-goalkeeper-openapi.json (v0.5.0)
+applies_to: Goalkeeper API + MCP (github.com/poggiolabs/goalkeeper)
+authentication:
+  style: >-
+    Bearer — an opaque Goalkeeper API token, or a provider-issued OAuth access token on a
+    deployment that injects an McpOAuthProvider/AuthBackend. Browsers use the
+    goalkeeper_session cookie instead.
+  schemes: [bearerAuth (http bearer), cookieAuth (cookie goalkeeper_session)]
+  scopes: scopes/poggio-labs-goalkeeper-scopes.yml
+idempotency:
+  supported: true
+  mechanism: request-body field
+  field: idempotencyKey
+  scope: per goal status update (POST /v1/goals/{goalId}/updates, MCP report_goal_update)
+  required: true
+  constraints: {min_length: 1, max_length: 200}
+  concurrency_control:
+    field: expectedRevision
+    type: integer
+    semantics: >-
+      Optimistic concurrency — the caller states the goal revision it believes it is
+      updating and the write is applied atomically against that revision; a mismatch is
+      rejected rather than silently overwriting a concurrent agent's report.
+  mcp_annotation: "report_goal_update is annotated idempotentHint: true"
+  note: >-
+    Idempotency is a required part of the write contract rather than an optional header:
+    every status/health/evaluation report an agent appends must carry both an
+    idempotencyKey and the expected revision. There is no Idempotency-Key HTTP header —
+    the key travels in the JSON body.
+pagination:
+  style: none
+  note: >-
+    List responses (ListGoalsResponse, ListGoalUpdatesResponse, ListGoalLabelsResponse,
+    ListApiTokensResponse) return a single unpaginated array; no cursor, limit or offset
+    parameters are declared in the OpenAPI.
+filtering:
+  operation: listGoals
+  params: [status, health, ownerUserId, labelId]
+versioning:
+  scheme: uri-path
+  current: v1
+  product_version: 0.5.0
+  policy: >-
+    Semantic Versioning with vMAJOR.MINOR.PATCH git tags covering the REST API, MCP server,
+    database migrations and browser app as one tested release; before 1.0.0 incompatible and
+    backwards-compatible changes both increment MINOR.
+  docs: https://docs.gkeeper.ai/docs/releases
+error_envelope:
+  format: custom-json
+  schema: '{"error": "<string>", "message": "<string>"}'
+  required: [error]
+  rfc9457: false
+  ref: errors/poggio-labs-goalkeeper-problem-types.yml
+health:
+  endpoint: GET /health
+  hosts: exposed by both the REST API and the MCP service on their respective origins
+rate_limits:
+  published: false
+  ref: rate-limits/poggio-labs-rate-limits.yml
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id or correlation header is documented. Write attribution is carried in the
+    resource instead: each GoalUpdate records authorityUserId, actor, authentication and
+    clientInfo, separating the authorizing user from the immediate actor (API token, OAuth
+    client, or a provider-verified agent binding).
+content_type: application/json
+cross_reference:
+  authentication: authentication/poggio-labs-authentication.yml
+  scopes: scopes/poggio-labs-goalkeeper-scopes.yml
+  errors: errors/poggio-labs-goalkeeper-problem-types.yml
+  lifecycle: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
+  mcp: mcp/poggio-labs-goalkeeper-mcp.yml

@@ -1,0 +1,30 @@
+generated: '2026-08-13'
+method: searched
+source: https://poggio.io/docs/api and https://poggio.io/pricing
+limit_count: 0
+limits: []
+response_headers: []
+exhaustion_status: null
+note: >-
+  Poggio publishes no rate limits. The REST API reference (https://poggio.io/docs/api,
+  https://poggio.io/docs/api/v2) documents no per-key, per-account or per-endpoint
+  limit, no X-RateLimit-*/RateLimit-* response headers and no 429 behaviour, and the
+  site's own documentation search (GET https://poggio.io/api/search-all?q=rate%20limit)
+  returns no rate-limit page. What Poggio does meter is CREDITS, a commercial quota
+  rather than a runtime rate limit: 1 credit per agent message, 2 per weekly digest,
+  5 per account plan update, 10 per account deep research, drawn from a pooled monthly
+  balance that is shared by Slack, Salesforce, the web app, the REST API and MCP —
+  see plans/poggio-labs-plans-pricing.yml. Credits do not surface as HTTP rate-limit
+  headers in any published documentation, so an agent has no runtime signal to back off on.
+  Goalkeeper (services/api in github.com/poggiolabs/goalkeeper, OpenAPI 3.1) declares no
+  429 response on any of its 36 operations; the only throttle in its docs is an internal
+  once-per-five-minutes write of an API token's lastUsedAt timestamp.
+x-evidence:
+- url: https://poggio.io/docs/api.md
+  http_status: 200
+- url: https://poggio.io/api/search-all?q=rate%20limit
+  http_status: 200
+  note: returns blog posts only; no rate-limit documentation exists
+- url: https://raw.githubusercontent.com/poggiolabs/goalkeeper/v0.5.0/services/api/openapi.json
+  http_status: 200
+  note: no 429 responses declared

@@ -8,13 +8,11 @@ server:
   url: https://mcp.poggio.io/mcp
   version: 1.0.05
 authentication:
-  # Per mcp.poggio.io/.well-known/oauth-protected-resource/mcp (authorization
-  # server = https://api.poggio.io/). bearer_methods_supported: [header].
   methods:
-  - oauth-dynamic-client-registration   # AI desktop clients (Claude Desktop, Cursor, Windsurf)
-  - oauth-authorization-code            # user-acting custom apps
-  - oauth-client-credentials            # server-to-server
-  - bearer-token                        # quick prototyping / simple scripts
+  - oauth-dynamic-client-registration
+  - oauth-authorization-code
+  - oauth-client-credentials
+  - bearer-token
   authorization_server: https://api.poggio.io/
 docs:
   connecting: https://poggio.io/docs/mcp
@@ -46,10 +44,28 @@ tools:
     type: string
     description: Company domain name.
 - name: ask_poggio
-  description: >-
-    Leverages Poggio's AI assistant with access to web search, Salesforce, Gong
-    transcripts, and company intelligence for comprehensive research.
+  description: Leverages Poggio's AI assistant with access to web search, Salesforce, Gong transcripts,
+    and company intelligence for comprehensive research.
   parameters:
   - name: question
     type: string
     description: Research query or analysis request.
+deployment:
+  mode: remote
+  endpoint: https://mcp.poggio.io/mcp
+  auth: oauth
+  verified: probed
+  probe: gated
+  checked: '2026-08-13'
+  source: catalog MCP census; re-probed 2026-08-13
+  evidence:
+    request: POST https://mcp.poggio.io/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"}
+    http_status: 401
+    error: invalid_token
+    www_authenticate: >-
+      Bearer error="invalid_token", resource_metadata="https://mcp.poggio.io/.well-known/oauth-protected-resource/mcp"
+    server: uvicorn
+    note: >-
+      The live tool schemas are auth-gated. The tools[] list above is the provider's own
+      published catalog from https://poggio.io/docs/mcp/tool-specs — names, descriptions and
+      parameters as documented; full inputSchemas would require authenticated introspection.

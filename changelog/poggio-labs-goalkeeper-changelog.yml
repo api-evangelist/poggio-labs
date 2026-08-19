@@ -1,0 +1,76 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://github.com/poggiolabs/goalkeeper/blob/main/CHANGELOG.md,
+  https://api.github.com/repos/poggiolabs/goalkeeper/releases and
+  https://docs.gkeeper.ai/docs/releases
+applies_to: Goalkeeper (github.com/poggiolabs/goalkeeper)
+scheme: semver
+tag_format: vMAJOR.MINOR.PATCH
+current_version: 0.5.0
+current_released: '2026-08-11'
+generated_by: Release Please from Conventional Commits on main
+policy:
+  url: https://docs.gkeeper.ai/docs/releases
+  summary: >-
+    One product version covers the REST API, MCP server, database migrations, browser app
+    and all other source as a single tested release. Before 1.0.0 both incompatible and
+    backwards-compatible features increment MINOR and fixes increment PATCH. Release tags
+    are immutable and are only ever created by the release workflow.
+  artifacts:
+  - ghcr.io/poggiolabs/goalkeeper-api
+  - ghcr.io/poggiolabs/goalkeeper-mcp
+  - ghcr.io/poggiolabs/goalkeeper-web
+  - static browser distribution attached to the GitHub Release (checksummed + attested)
+entries:
+- version: 0.5.0
+  date: '2026-08-11'
+  breaking: false
+  additions:
+  - 'api: migrate REST service to Hono (#22)'
+  fixes:
+  - 'api: correct stale email delivery strings (#23)'
+- version: 0.4.0
+  date: '2026-08-10'
+  breaking: false
+  additions:
+  - 'api: add organization invitations (#21)'
+  - 'mcp: add trusted OAuth proxy adapter (#19)'
+- version: 0.3.0
+  date: '2026-08-07'
+  breaking: false
+  additions:
+  - 'auth: add trusted proxy backend (#17)'
+- version: 0.2.0
+  date: '2026-08-06'
+  breaking: false
+  additions:
+  - 'auth: add label API token scopes (#13)'
+  - 'goals: goal management UI, MCP settings (#15)'
+  fixes:
+  - 'ui: dark on dark text in composer (#16)'
+- version: 0.1.1
+  date: '2026-08-05'
+  breaking: false
+  fixes:
+  - 'web: restore local API default (#11)'
+- version: 0.1.0
+  date: '2026-08-05'
+  breaking: false
+  additions:
+  - 'api: add goals, status updates, and labels (#5)'
+  - 'auth: auth provider and local dev email auth (#3)'
+  - 'mcp: add goals MCP server with OAuth discovery (#6)'
+  - 'release: publish operator artifacts (#7)'
+  - 'ui: organization-aware app shell (#4)'
+poggio_platform_note: >-
+  The hosted Poggio platform publishes no dated API changelog. Product changes are
+  announced as blog posts on https://poggio.io/resources (captured in blogs/), and the
+  site's own documentation search returns nothing for "changelog".
+x-evidence:
+- url: https://api.github.com/repos/poggiolabs/goalkeeper/releases
+  http_status: 200
+  fetched: '2026-08-13'
+- url: https://raw.githubusercontent.com/poggiolabs/goalkeeper/main/CHANGELOG.md
+  http_status: 200
+  fetched: '2026-08-13'

@@ -1,0 +1,43 @@
+generated: '2026-08-13'
+method: searched
+source: https://docs.gkeeper.ai/docs/releases and https://github.com/poggiolabs/goalkeeper/releases
+applies_to: Goalkeeper (github.com/poggiolabs/goalkeeper)
+versioning:
+  scheme: semver
+  api_path_version: v1
+  product_version: 0.5.0
+  tag_format: vMAJOR.MINOR.PATCH
+  docs: https://docs.gkeeper.ai/docs/releases
+  policy: >-
+    One repository version covers the REST API, MCP server, database migrations, browser
+    app and every other source artifact as one tested release. Before 1.0.0, incompatible
+    and backwards-compatible features both increment MINOR and fixes increment PATCH;
+    after 1.0.0 normal semver applies.
+release_process:
+  automation: Release Please (Conventional Commits) + three GitHub Actions workflows
+  workflows:
+  - {trigger: push to main, workflow: release.yml, responsibility: open/update the release
+      PR, then tag and draft the GitHub Release}
+  - {trigger: PR or push to main, workflow: ci.yml, responsibility: typecheck, test against
+      PostgreSQL, build, verify generated files, build all three container images}
+  - {trigger: release workflow call, workflow: publish-artifacts.yml, responsibility: validate
+      the immutable tag, rebuild and attest artifacts, publish images, publish the release}
+  tag_immutability: >-
+    Release tags are immutable and must never be created, moved or replaced manually; the
+    release workflow is the only automated tag creator.
+  provenance: registry provenance attestations on the container images; checksummed and
+    attested static browser distribution
+deprecation:
+  policy_url: null
+  sunset_header: null
+  note: >-
+    No deprecation policy and no RFC 8594 Sunset/Deprecation header support is documented.
+    The pre-1.0 versioning policy is the only forward-compatibility statement published.
+sla:
+  url: null
+  note: Self-hosted software — availability is the operator's responsibility, not Poggio Labs'.
+status_page: null
+health_endpoint: GET /health (REST API and MCP service, each on its own origin)
+deprecated_operations: []
+changelog: changelog/poggio-labs-goalkeeper-changelog.yml
+license: Apache-2.0

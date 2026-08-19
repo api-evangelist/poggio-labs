@@ -1,0 +1,72 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, ghcr.io registry v2 tag listing,
+  api.github.com/orgs/poggiolabs, https://poggio.io/docs
+package_count: 3
+packages:
+- language: n/a
+  registry: ghcr
+  name: poggiolabs/goalkeeper-api
+  url: https://github.com/poggiolabs/goalkeeper/pkgs/container/goalkeeper-api
+  install: docker pull ghcr.io/poggiolabs/goalkeeper-api:0.5.0
+  official: true
+  version: 0.5.0
+  published: '2026-08-11'
+  note: >-
+    Multi-arch (linux/amd64, linux/arm64) container image for the Goalkeeper REST
+    API service, published from the poggiolabs/goalkeeper release workflow with
+    registry provenance attestations. version/published read from the ghcr.io v2
+    tag list and the matching GitHub release v0.5.0.
+- language: n/a
+  registry: ghcr
+  name: poggiolabs/goalkeeper-mcp
+  url: https://github.com/poggiolabs/goalkeeper/pkgs/container/goalkeeper-mcp
+  install: docker pull ghcr.io/poggiolabs/goalkeeper-mcp:0.5.0
+  official: true
+  version: 0.5.0
+  published: '2026-08-11'
+  note: >-
+    Container image for the stateless Streamable HTTP MCP service that exposes the
+    Goalkeeper goal and label tools. This is the distribution mechanism for the
+    Goalkeeper MCP server — there is no hosted endpoint.
+- language: n/a
+  registry: ghcr
+  name: poggiolabs/goalkeeper-web
+  url: https://github.com/poggiolabs/goalkeeper/pkgs/container/goalkeeper-web
+  install: docker pull ghcr.io/poggiolabs/goalkeeper-web:0.5.0
+  official: true
+  version: 0.5.0
+  published: '2026-08-11'
+  note: Container image for the Goalkeeper browser application.
+sdk_count: 0
+sdks: []
+examples:
+- language: python
+  registry: github
+  name: poggiolabs/example-poggio-mcp-client
+  url: https://github.com/poggiolabs/example-poggio-mcp-client
+  official: true
+  version: null
+  published: '2025-10-03'
+  note: >-
+    First-party EXAMPLE client (Apache-2.0), not a distributed SDK — it is not
+    published to PyPI and carries no release tags, so version is null. Shows how to
+    pull account intelligence from Poggio over MCP. published is the last push date.
+registries_probed:
+- registry: npm
+  query: https://registry.npmjs.org/-/v1/search?text=poggio
+  result: 0 results — no first-party Poggio or Goalkeeper package on npm
+- registry: pypi
+  query: https://pypi.org/pypi/poggio/json
+  result: 404 — no first-party package on PyPI
+- registry: ghcr
+  query: https://ghcr.io/v2/poggiolabs/goalkeeper-*/tags/list
+  result: 3 public images, tags 0.1.0 through 0.5.0 plus latest
+note: >-
+  Poggio ships NO client SDK for its hosted REST API v2 or its hosted MCP server.
+  Integration is documented as raw HTTP + OAuth 2.0 (https://poggio.io/docs/api) or by
+  pointing an MCP client at https://mcp.poggio.io/mcp. The only first-party published
+  artifacts are the three Goalkeeper container images and one example MCP client, so no
+  SDKs pointer is emitted — an SDKs pointer here would credit client libraries that do
+  not exist.

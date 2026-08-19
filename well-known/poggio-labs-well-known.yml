@@ -1,6 +1,7 @@
-generated: '2026-07-20'
+generated: '2026-08-13'
 method: searched
-source: live probes of /.well-known/ on Poggio API + MCP hosts
+source: live probes of /.well-known/ on Poggio API + MCP + web hosts
+last_probed: '2026-08-13'
 hosts:
 - host: https://api.poggio.io
   documents:
@@ -14,6 +15,12 @@ hosts:
     status: 404
   - path: /.well-known/security.txt
     status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+    probed: '2026-08-13'
+  - path: /.well-known/agent.json
+    status: 404
+    probed: '2026-08-13'
 - host: https://mcp.poggio.io
   documents:
   - path: /.well-known/oauth-protected-resource/mcp
@@ -21,6 +28,12 @@ hosts:
     file: poggio-labs-mcp-oauth-protected-resource.json
   - path: /.well-known/oauth-authorization-server/mcp
     status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+    probed: '2026-08-13'
+  - path: /.well-known/agent.json
+    status: 404
+    probed: '2026-08-13'
 - host: https://poggio.io
   documents:
   - path: /.well-known/security.txt
@@ -29,3 +42,33 @@ hosts:
     status: 404
   - path: /.well-known/ai-plugin.json
     status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+    probed: '2026-08-13'
+    note: 404 body is the site's HTML shell, not a document
+  - path: /.well-known/agent.json
+    status: 404
+    probed: '2026-08-13'
+- host: https://docs.gkeeper.ai
+  note: >-
+    Documentation host for Goalkeeper, the company's Apache-2.0 self-hosted product
+    (github.com/poggiolabs/goalkeeper).
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+    probed: '2026-08-13'
+  - path: /.well-known/agent.json
+    status: 404
+    probed: '2026-08-13'
+a2a:
+  found: false
+  note: >-
+    No A2A Agent Card is served on any Poggio Labs host. Every /.well-known/agent-card.json
+    and /.well-known/agent.json probe returned 404 on 2026-08-13, so no a2a/ artifact was
+    written. Worth noting the company has forked the A2A protocol repositories
+    (poggiolabs/A2A, poggiolabs/a2a-python, poggiolabs/a2a-js) — interest without a
+    published card.
+goalkeeper_note: >-
+  A self-hosted Goalkeeper deployment configured with an McpOAuthProvider publishes RFC 9728
+  Protected Resource Metadata for its /mcp endpoint, but that is the operator's host, not a
+  Poggio Labs one, so there is nothing to probe here.

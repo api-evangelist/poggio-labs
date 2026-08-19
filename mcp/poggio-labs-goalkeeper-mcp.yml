@@ -1,0 +1,126 @@
+generated: '2026-08-13'
+method: searched
+status: published
+source: >-
+  https://docs.gkeeper.ai/docs/concepts/mcp and
+  https://github.com/poggiolabs/goalkeeper/blob/v0.5.0/services/mcp/src/tools.ts
+ownership_note: >-
+  Goalkeeper is a second, Apache-2.0 open-source product from Poggio Labs. It is served
+  from the company's own GitHub organization (github.com/poggiolabs/goalkeeper) and its
+  documentation site (docs.gkeeper.ai) links back to that repository, so the surface is
+  first-party even though it sits on a different domain than poggio.io.
+server:
+  name: goalkeeper
+  transport: streamable-http
+  path: /mcp
+  version: 0.5.0
+  protocol_versions:
+  - '2026-07-28'
+  - '2025-11-25'
+  stateless: true
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: docker pull ghcr.io/poggiolabs/goalkeeper-mcp:0.5.0   # or `bun run mcp:dev` from a checkout
+  package: https://github.com/poggiolabs/goalkeeper/pkgs/container/goalkeeper-mcp
+  auth: api-key
+  verified: searched
+  note: >-
+    Poggio Labs runs NO hosted Goalkeeper MCP endpoint. The server is a container an
+    operator deploys themselves; the documented address is http://127.0.0.1:3002/mcp in
+    local development and whatever PUBLIC_MCP_URL the operator sets in a self-hosted
+    deployment. mode is recorded as local-stdio because, like a stdio package, a human
+    must install and run it before any agent can reach it — the transport itself is
+    Streamable HTTP, not stdio. Do not read this as an agent-reachable URL.
+authentication:
+  self_hosted:
+    method: bearer
+    credential: Goalkeeper API token in the Authorization header
+    constraints: >-
+      The token's organization, scopes, expiry and the owner's live membership role
+      constrain every tool call.
+  hosted:
+    method: oauth
+    note: >-
+      A deployment may inject an McpOAuthProvider; Goalkeeper then acts only as an OAuth
+      resource server, publishes RFC 9728 Protected Resource Metadata and includes its URL
+      in bearer challenges. The provider must support PKCE plus Client ID Metadata Documents
+      or Dynamic Client Registration, and must validate the exact /mcp resource audience.
+      A provider-neutral trusted_proxy adapter is also shipped for private-ingress deployments.
+    scopes_supported: [goals:read, goals:write, labels:read, labels:write]
+    spec: https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization
+docs:
+  concepts: https://docs.gkeeper.ai/docs/concepts/mcp
+  api_tokens: https://docs.gkeeper.ai/docs/concepts/api-tokens
+  services: https://docs.gkeeper.ai/docs/services
+tool_count: 11
+tools:
+- name: list_goals
+  title: List goals
+  description: List goals visible to the authenticated principal.
+  scope: goals:read
+- name: get_goal
+  title: Get goal
+  description: Get one goal by ID.
+  scope: goals:read
+- name: create_goal
+  title: Create goal
+  description: Create an active durable goal.
+  scope: goals:write
+- name: update_goal
+  title: Update goal
+  description: >-
+    Update goal description, timeframe, criteria, ownership, or labels. Use
+    report_goal_update to change status, report health, or record an evaluation.
+  scope: goals:write
+- name: list_goal_updates
+  title: List goal updates
+  description: List a goal's append-only status history.
+  scope: goals:read
+- name: report_goal_update
+  title: Report goal update
+  description: >-
+    Append a report, optionally report health or evaluate the goal, and atomically
+    advance its status and revision.
+  scope: goals:write
+  annotations:
+    readOnlyHint: false
+    destructiveHint: false
+    idempotentHint: true
+  required_inputs: [goalId, status, summary, details, expectedRevision, idempotencyKey]
+- name: list_goal_labels
+  title: List goal labels
+  description: List the organization's goal labels.
+  scope: labels:read
+- name: get_goal_label
+  title: Get goal label
+  description: Get one goal label by ID.
+  scope: labels:read
+- name: create_goal_label
+  title: Create goal label
+  description: Create an organization goal label.
+  scope: labels:write
+- name: update_goal_label
+  title: Update goal label
+  description: Rename or update an organization goal label.
+  scope: labels:write
+- name: delete_goal_label
+  title: Delete goal label
+  description: Delete an unassigned organization goal label.
+  scope: labels:write
+notes:
+- >-
+  Goals are archived through report_goal_update; the MCP surface deliberately ships no
+  hard-delete tool for goals (only labels can be deleted).
+- >-
+  Status-update attribution separates the authorizing user from the immediate actor.
+  MCP client name and version are recorded as self-reported descriptive metadata and
+  never establish identity.
+x-evidence:
+- url: https://raw.githubusercontent.com/poggiolabs/goalkeeper/v0.5.0/services/mcp/src/tools.ts
+  http_status: 200
+  fetched: '2026-08-13'
+  note: tool names, titles, descriptions and scope namespaces read verbatim from source
+- url: https://docs.gkeeper.ai/
+  http_status: 200
+  fetched: '2026-08-13'

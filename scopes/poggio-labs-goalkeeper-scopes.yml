@@ -1,0 +1,71 @@
+generated: '2026-08-13'
+method: searched
+source: https://docs.gkeeper.ai/docs/concepts/api-tokens
+docs: https://docs.gkeeper.ai/docs/concepts/api-tokens
+spec_source: openapi/poggio-labs-goalkeeper-openapi.json#/components/schemas/ApiTokenScope
+applies_to: Goalkeeper (github.com/poggiolabs/goalkeeper) API tokens and MCP OAuth
+registry_endpoint: GET /v1/api-token-scopes
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: A Goalkeeper API token or provider-issued OAuth access token.
+  source: openapi/poggio-labs-goalkeeper-openapi.json
+- name: cookieAuth
+  type: apiKey
+  in: cookie
+  parameter_name: goalkeeper_session
+  source: openapi/poggio-labs-goalkeeper-openapi.json
+scope_count: 6
+scopes:
+- scope: goals:read
+  description: Read goals owned by the token owner.
+  default: true
+  note: The token creation form initially selects only this scope.
+- scope: goals:write
+  description: >-
+    Create goals, update metadata, and report status for goals owned by the token owner.
+- scope: goals:read:all
+  description: Read every goal visible to the token owner.
+  implies: [goals:read]
+- scope: goals:write:all
+  description: >-
+    Create goals, update metadata, and report status for every goal writable by the
+    token owner.
+  implies: [goals:write]
+- scope: labels:read
+  description: Read organization goal labels.
+- scope: labels:write
+  description: Create, update, and delete organization goal labels.
+rules:
+- All-goals scopes include the corresponding own-goals capability.
+- Write scopes do NOT imply read access.
+- Every token must carry at least one scope.
+- >-
+  authorizeApiToken denies capabilities absent from the registry and revalidates the
+  token owner's current authority on every request; removing that authority blocks the
+  token without requiring token replacement.
+- >-
+  API tokens cannot call token-management operations; those require an interactive
+  browser session.
+token_policy:
+  storage: SHA-256 hash of a 256-bit random secret
+  secret_visibility: returned in full once at creation; later responses expose only a prefix
+  expiry_days: {min: 1, max: 365, default: 90}
+  revocation: persistent and immediate
+  last_used_write_interval: 5 minutes
+  opaque: >-
+    API tokens are intentionally not JWTs so that revocation and current-policy checks
+    stay authoritative on every request.
+mcp_oauth_scopes:
+  supported: [goals:read, goals:write, labels:read, labels:write]
+  initial: [goals:read, labels:read]
+  note: >-
+    Configured on a hosted deployment via MCP_OAUTH_SCOPES_SUPPORTED /
+    MCP_OAUTH_INITIAL_SCOPES; see mcp/poggio-labs-goalkeeper-mcp.yml.
+poggio_platform_note: >-
+  The hosted Poggio platform API (api.poggio.io/v2) publishes OAuth 2.0 authorization
+  server metadata with no scopes_supported key at all, and its MCP protected-resource
+  metadata publishes scopes_supported as an EMPTY array — Poggio's hosted surface has no
+  scope vocabulary; organization is inferred from the access token instead. This scopes
+  artifact therefore covers Goalkeeper only.

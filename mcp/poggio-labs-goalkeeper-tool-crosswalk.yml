@@ -1,0 +1,118 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  mcp/poggio-labs-goalkeeper-mcp.yml bound to openapi/poggio-labs-goalkeeper-openapi.json
+  (Goalkeeper API 3.1.0, v0.5.0)
+surfaces:
+  openapi:
+    file: openapi/poggio-labs-goalkeeper-openapi.json
+    operations: 36
+    servers: http://localhost:3001 (self-hosted; no vendor-hosted base URL is published)
+  mcp:
+    file: mcp/poggio-labs-goalkeeper-mcp.yml
+    endpoint: /mcp on the operator's own deployment (no hosted endpoint)
+    gated: true
+    note: >-
+      tools/list could not be called live because Poggio Labs hosts no Goalkeeper MCP
+      server; the tool list was read verbatim from services/mcp/src/tools.ts at tag v0.5.0,
+      which is a stronger source than a live probe would have been.
+  graphql: null
+crosswalk:
+- tool: list_goals
+  category: goals
+  rest: [listGoals]
+  binding: rest
+  confidence: high
+  note: Shares the status/health/ownerUserId/labelId query filters of GET /v1/goals.
+- tool: get_goal
+  category: goals
+  rest: [getGoal]
+  binding: rest
+  confidence: high
+- tool: create_goal
+  category: goals
+  rest: [createGoal]
+  binding: rest
+  confidence: high
+  note: inputSchema mirrors CreateGoalRequest (detailedDescription + timeframe required).
+- tool: update_goal
+  category: goals
+  rest: [updateGoal]
+  binding: rest
+  confidence: high
+  note: PATCH /v1/goals/{goalId}; metadata only — status changes go through report_goal_update.
+- tool: list_goal_updates
+  category: goals
+  rest: [listGoalUpdates]
+  binding: rest
+  confidence: high
+- tool: report_goal_update
+  category: goals
+  rest: [createGoalUpdate]
+  binding: rest
+  confidence: high
+  note: >-
+    POST /v1/goals/{goalId}/updates. CreateGoalUpdateRequest requires both expectedRevision
+    (optimistic concurrency) and idempotencyKey — the tool inherits that contract exactly,
+    which is why the tool carries idempotentHint: true.
+- tool: list_goal_labels
+  category: labels
+  rest: [listGoalLabels]
+  binding: rest
+  confidence: high
+- tool: get_goal_label
+  category: labels
+  rest: [getGoalLabel]
+  binding: rest
+  confidence: high
+- tool: create_goal_label
+  category: labels
+  rest: [createGoalLabel]
+  binding: rest
+  confidence: high
+- tool: update_goal_label
+  category: labels
+  rest: [updateGoalLabel]
+  binding: rest
+  confidence: high
+- tool: delete_goal_label
+  category: labels
+  rest: [deleteGoalLabel]
+  binding: rest
+  confidence: high
+mcp_only: []
+rest_only:
+- capability: System
+  operations: [getApiHealth]
+- capability: Authentication
+  operations: [getAuthSession, getAuthConfiguration, beginAuthLogin, loginWithEmail,
+    registerWithEmail, verifyEmail, completeAuthLogin, logoutAuthSession]
+  reason: Browser session lifecycle; API tokens and OAuth clients never call these.
+- capability: Organizations
+  operations: [listOrganizations, createOrganization, switchOrganization, updateCurrentOrganization,
+    listCurrentOrganizationMembers, updateCurrentOrganizationMemberRole, listCurrentOrganizationInvitations,
+    createCurrentOrganizationInvitation, revokeCurrentOrganizationInvitation,
+    resendCurrentOrganizationInvitation, acceptOrganizationInvitation]
+  reason: Organization administration is deliberately not agent-exposed.
+- capability: API Tokens
+  operations: [listApiTokens, createApiToken, listApiTokenScopes, revokeApiToken]
+  reason: >-
+    Credential management requires an interactive browser session — the docs state API
+    tokens cannot call token-management operations, so no MCP tool can exist for these.
+- capability: Goals — delete
+  operations: [deleteGoal]
+  reason: >-
+    DELETE /v1/goals/{goalId} exists in REST but is intentionally absent from MCP; agents
+    archive a goal through report_goal_update instead of hard-deleting it.
+coverage:
+  tools_named: 11
+  tools_bound: 11
+  mcp_only: 0
+  rest_operations_total: 36
+  rest_operations_with_tool: 11
+  rest_only: 25
+note: >-
+  Every MCP tool binds cleanly to one REST operation — Goalkeeper's MCP surface is a
+  deliberate read/write subset of its REST surface restricted to goals and labels, with
+  authentication, organization administration and credential management withheld from
+  agents by design.

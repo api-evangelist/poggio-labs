@@ -1,0 +1,123 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/poggio-labs-goalkeeper-openapi.json#/components/schemas (Goalkeeper API v0.5.0)
+docs: https://docs.gkeeper.ai/docs/concepts/goals
+entity_count: 7
+identifiers:
+  format: uuid (RFC 4122) for every product entity
+  user_ids: >-
+    provider-qualified opaque string (1–200 chars), not a uuid — Goalkeeper persists only
+    its own data keyed by the canonical provider-qualified user ID.
+entities:
+- name: Organization
+  schema: OrganizationSummary
+  description: Tenant boundary; every goal, label, token and membership is scoped to one.
+  fields: [id, name, role]
+- name: OrganizationMember
+  schema: OrganizationMember
+  description: A user's membership and role in an organization.
+  enums:
+    role: [owner, admin, member]
+- name: OrganizationInvitation
+  schema: OrganizationInvitation
+  description: >-
+    A pending email invitation to an organization; claimed by verified email address.
+- name: Goal
+  schema: Goal
+  description: >-
+    The durable record of an outcome — definition of done, accountable owner, timeframe,
+    and current status/health/evaluation, carrying a monotonic revision.
+  fields: [id, organizationId, title, detailedDescription, status, health, timeframe,
+    currentEvaluation, ownerUserId, labels, criteria, revision, createdAt, createdByUserId,
+    updatedAt, updatedByUserId]
+  enums:
+    status: GoalStatus
+    health: GoalHealth
+    timeframe: GoalTimeframe (discriminated union on `kind`)
+- name: GoalCriterion
+  schema: GoalCriterion
+  description: One success criterion belonging to a goal (max 100 per goal).
+- name: GoalUpdate
+  schema: GoalUpdate
+  description: >-
+    Append-only status report on a goal — status, optional health, optional evaluation,
+    summary and details — carrying the revision it advanced the goal to, its
+    idempotencyKey, and full attribution.
+  fields: [id, organizationId, goalId, revision, status, health, evaluation, summary,
+    details, authorityUserId, actor, authentication, clientInfo, idempotencyKey, createdAt]
+- name: GoalLabel
+  schema: GoalLabel
+  description: Organization-level taxonomy applied to goals (max 20 labels per goal).
+- name: ApiToken
+  schema: ApiToken
+  description: >-
+    Scoped, revocable opaque credential owned by a user within an organization; stored
+    as a SHA-256 hash, surfaced afterwards only by prefix.
+  fields: [id, name, prefix, scopes, expiresAt, lastUsedAt, revokedAt, createdAt]
+relationships:
+- from: Goal
+  to: Organization
+  type: belongs_to
+  via: organizationId
+- from: Goal
+  to: GoalLabel
+  type: has_many
+  via: labels / labelIds
+  note: max 20 labels per goal; labels are organization-scoped and reusable
+- from: Goal
+  to: GoalCriterion
+  type: has_many
+  via: criteria
+  note: max 100 criteria per goal
+- from: Goal
+  to: GoalUpdate
+  type: has_many
+  via: goalId
+  note: append-only history; a goal's revision advances with each update
+- from: Goal
+  to: OrganizationMember
+  type: has_one
+  via: ownerUserId
+  note: nullable — a goal may be unowned
+- from: GoalUpdate
+  to: Goal
+  type: belongs_to
+  via: goalId
+- from: GoalUpdate
+  to: GoalEvaluation
+  type: has_one
+  via: evaluation
+  note: nullable; the goal's currentEvaluation mirrors the most recent evaluated update
+- from: GoalLabel
+  to: Organization
+  type: belongs_to
+  via: organizationId
+- from: ApiToken
+  to: Organization
+  type: belongs_to
+  via: active organization at creation time
+- from: ApiToken
+  to: ApiTokenScope
+  type: has_many
+  via: scopes
+  note: minimum one scope; see scopes/poggio-labs-goalkeeper-scopes.yml
+- from: OrganizationMember
+  to: Organization
+  type: belongs_to
+  via: organizationId
+- from: OrganizationInvitation
+  to: Organization
+  type: belongs_to
+  via: organizationId
+lifecycle_notes:
+- >-
+  Goals are archived through a status report (report_goal_update / createGoalUpdate), not
+  deleted, on the MCP surface; REST additionally exposes deleteGoal.
+- >-
+  Goal writes are revision-checked: a caller supplies expectedRevision and the update is
+  applied atomically or rejected with 409.
+- >-
+  A label can only be deleted when it is unassigned.
+poggio_platform_note: >-
+  No entity graph is derived for the hosted Poggio platform API — its published reference
+  pages carry the path and method only, with no request/response schemas to read.

@@ -1,0 +1,89 @@
+generated: '2026-08-13'
+method: searched
+source: https://poggio.io/pricing
+docs: https://poggio.io/pricing
+currency: USD
+model: per-seat subscription with a pooled credit system
+plan_count: 3
+plans:
+- name: Free Trial
+  price: 0
+  currency: USD
+  period: 14-day trial
+  credit_card_required: false
+  limits:
+    users: 10
+    credits: 300
+    credit_scope: shared across all surfaces for the trial
+  includes:
+  - Slack app
+  - Gong integration
+  - Web, API, and MCP access
+  - Deep account research
+  - Proactive account digests
+  - Full agent capabilities
+  - Salesforce integration
+- name: Pro
+  price: 49
+  currency: USD
+  period: user/month
+  most_popular: true
+  limits:
+    users: 99
+    credits: 300
+    credit_scope: per seat per month, pooled across users
+  overage:
+    unit: credit
+    price: 0.15
+    currency: USD
+    note: >-
+      Additional credits are billed at the end of the month; pre-purchased credit
+      discounts are available. Users are never cut off when credits run out.
+  includes:
+  - Slack app
+  - Gong integration
+  - Web, API, and MCP access
+  - Deep account research
+  - Proactive account digests
+  - Full agent capabilities
+  - Salesforce integration
+- name: Enterprise
+  price: null
+  currency: USD
+  period: custom / annual contract
+  sales_contact: true
+  limits:
+    users: unlimited
+  includes:
+  - Everything in Pro
+  - Bulk credit packages at volume discounts
+  - Annual contracts with custom pricing
+  - SCIM provisioning and SSO
+  - Dedicated account management
+  - AI workflow configuration and launch services
+  - Account planning consultation
+credit_costs:
+- action: Agent message
+  credits: 1
+- action: Weekly digest
+  credits: 2
+- action: Account plan update
+  credits: 5
+- action: Account deep research
+  credits: 10
+notes:
+- >-
+  Credits are pooled across all users in a workspace and are drawn down
+  identically from Slack, Salesforce, the web app, the REST API, and the MCP
+  server — API and agent usage is metered on the same credit pool as human usage.
+- >-
+  The pricing page states Poggio is SOC 2 Type II compliant and that Enterprise
+  plans add SSO, SCIM provisioning, and contractual DPAs.
+- >-
+  Goalkeeper (the company's Apache-2.0 self-hosted product at
+  github.com/poggiolabs/goalkeeper) publishes no pricing; it is free open source
+  software the operator runs themselves.
+x-evidence:
+- url: https://poggio.io/pricing
+  http_status: 200
+  fetched: '2026-08-13'
