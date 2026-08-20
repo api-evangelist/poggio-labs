@@ -48,6 +48,21 @@ created: '2026-07-17'
 modified: '2026-08-13'
 tags:
 - Company
+- Artificial Intelligence
+- Revenue Intelligence
+- Sales
+- Account Intelligence
+- CRM
+- Salesforce
+- MCP
+- AI Agents
+- Enterprise
+- Open-Source
+- Goals
+- Gong
+- Slack
+tags_raw:
+- Company
 - Ai
 - Revenue Intelligence
 - Sales
@@ -72,6 +87,11 @@ apis:
   humanURL: https://poggio.io/docs/api
   baseURL: https://api.poggio.io/v2
   tags:
+  - Account Intelligence
+  - Salesforce
+  - Context
+  - SuperAgent
+  tags_raw:
   - Account Intelligence
   - Salesforce
   - Context
@@ -118,6 +138,11 @@ apis:
   tags:
   - Goals
   - AI Agents
+  - Open-Source
+  - Project Management
+  tags_raw:
+  - Goals
+  - AI Agents
   - Open Source
   - Project Management
   properties:
@@ -161,6 +186,11 @@ apis:
     The documented local address for the self-hosted service. There is no vendor-hosted
     Goalkeeper MCP endpoint; a deployment sets its own PUBLIC_MCP_URL.
   tags:
+  - MCP
+  - AI Agents
+  - Goals
+  - Open-Source
+  tags_raw:
   - MCP
   - AI Agents
   - Goals
