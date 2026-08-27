@@ -79,10 +79,9 @@ tags_raw:
 apis:
 - name: Poggio REST API v2
   description: >-
-    Versioned REST API (v2) exposing Poggio account intelligence, context search,
-    account digests, the superagent chat, Salesforce account-plan writeback, and
-    third-party integration registration. Secured with OAuth 2.0 (authorization
-    code, client credentials, refresh token) and dynamic client registration;
+    Versioned REST API (v2) exposing Poggio account intelligence, context search, account digests, the
+    superagent chat, Salesforce account-plan writeback, and third-party integration registration. Secured
+    with OAuth 2.0 (authorization code, client credentials, refresh token) and dynamic client registration;
     organization is inferred from the access token.
   humanURL: https://poggio.io/docs/api
   baseURL: https://api.poggio.io/v2
@@ -103,11 +102,10 @@ apis:
     url: https://poggio.io/docs/api
 - name: Poggio MCP Server
   description: >-
-    Hosted, remote Model Context Protocol server exposing Poggio account intelligence to
-    AI clients — search and fetch account intelligence documents, create or recreate
-    accounts, and query the Poggio assistant across web search, Salesforce and Gong.
-    Authenticated with OAuth 2.0 including Dynamic Client Registration; tools/list is
-    auth-gated (HTTP 401 anonymously, probed 2026-08-13).
+    Hosted, remote Model Context Protocol server exposing Poggio account intelligence to AI clients —
+    search and fetch account intelligence documents, create or recreate accounts, and query the Poggio
+    assistant across web search, Salesforce and Gong. Authenticated with OAuth 2.0 including Dynamic Client
+    Registration; tools/list is auth-gated (HTTP 401 anonymously, probed 2026-08-13).
   humanURL: https://poggio.io/docs/mcp
   baseURL: https://mcp.poggio.io/mcp
   tags:
@@ -121,70 +119,18 @@ apis:
     url: https://poggio.io/docs/mcp
   - type: APIReference
     url: https://poggio.io/docs/mcp/tool-specs
-- name: Goalkeeper API
-  description: >-
-    Open-source (Apache-2.0) REST API for Goalkeeper, Poggio Labs' durable-goals record
-    for teams of people and AI agents. 36 operations across goals, append-only goal
-    updates, labels, organizations, API tokens and authentication, described by a
-    published OpenAPI 3.1.0 document. Self-hosted: Poggio Labs runs no hosted instance,
-    so the only declared server is the local development host and operators supply their
-    own. Writes are idempotency-keyed and revision-checked.
-  humanURL: https://docs.gkeeper.ai/docs/api/rest-api
-  baseURL: http://localhost:3001
-  x-baseurl-note: >-
-    Self-hosted software — this is the local development host declared in the provider's
-    own OpenAPI servers[]. No vendor-operated base URL exists to record; docs.gkeeper.ai
-    is the documentation site only.
-  tags:
-  - Goals
-  - AI Agents
-  - Open-Source
-  - Project Management
-  tags_raw:
-  - Goals
-  - AI Agents
-  - Open Source
-  - Project Management
-  properties:
-  - type: OpenAPI
-    url: openapi/poggio-labs-goalkeeper-openapi.json
-  - type: Documentation
-    url: https://docs.gkeeper.ai/
-  - type: APIReference
-    url: https://docs.gkeeper.ai/docs/api/rest-api
-  - type: GettingStarted
-    url: https://docs.gkeeper.ai/docs/getting-started
-  - type: SourceCode
-    url: https://github.com/poggiolabs/goalkeeper
-  - type: Overlay
-    url: overlays/poggio-labs-goalkeeper-overlay.yaml
-  - type: OAuthScopes
-    url: scopes/poggio-labs-goalkeeper-scopes.yml
-  - type: Conventions
-    url: conventions/poggio-labs-goalkeeper-conventions.yml
-  - type: Idempotency
-    url: conventions/poggio-labs-goalkeeper-conventions.yml
-  - type: ErrorCatalog
-    url: errors/poggio-labs-goalkeeper-problem-types.yml
-  - type: DataModel
-    url: data-model/poggio-labs-goalkeeper-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
-  - type: ChangeLog
-    url: changelog/poggio-labs-goalkeeper-changelog.yml
 - name: Goalkeeper MCP Server
   description: >-
-    Stateless Streamable HTTP MCP service shipped with Goalkeeper, exposing 11 tools for
-    creating and reading goals, appending status/health/evaluation reports, and managing
-    labels. Supports MCP protocol 2026-07-28 with a 2025-11-25 stateless fallback,
-    authenticates with a scoped Goalkeeper API token or an injected OAuth provider (RFC
-    9728 protected-resource metadata, PKCE, CIMD or DCR). Distributed as a container
-    image — Poggio Labs operates no hosted endpoint.
+    Stateless Streamable HTTP MCP service shipped with Goalkeeper, exposing 11 tools for creating and
+    reading goals, appending status/health/evaluation reports, and managing labels. Supports MCP protocol
+    2026-07-28 with a 2025-11-25 stateless fallback, authenticates with a scoped Goalkeeper API token
+    or an injected OAuth provider (RFC 9728 protected-resource metadata, PKCE, CIMD or DCR). Distributed
+    as a container image — Poggio Labs operates no hosted endpoint.
   humanURL: https://docs.gkeeper.ai/docs/concepts/mcp
   baseURL: http://127.0.0.1:3002/mcp
   x-baseurl-note: >-
-    The documented local address for the self-hosted service. There is no vendor-hosted
-    Goalkeeper MCP endpoint; a deployment sets its own PUBLIC_MCP_URL.
+    The documented local address for the self-hosted service. There is no vendor-hosted Goalkeeper MCP
+    endpoint; a deployment sets its own PUBLIC_MCP_URL.
   tags:
   - MCP
   - AI Agents
@@ -202,6 +148,166 @@ apis:
     url: mcp/poggio-labs-goalkeeper-tool-crosswalk.yml
   - type: Documentation
     url: https://docs.gkeeper.ai/docs/concepts/mcp
+- aid: poggio-labs:poggio-labs-api-tokens-api
+  name: Poggio Labs API Tokens API
+  description: Scoped credentials owned by an organization and user.
+  humanURL: https://poggio.io/docs/api
+  baseURL: https://api.poggio.io/v2
+  tags:
+  - API Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/poggio-labs-api-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gkeeper.ai/
+  - type: APIReference
+    url: https://docs.gkeeper.ai/docs/api/rest-api
+  - type: GettingStarted
+    url: https://docs.gkeeper.ai/docs/getting-started
+  - type: SourceCode
+    url: https://github.com/poggiolabs/goalkeeper
+  - type: OAuthScopes
+    url: scopes/poggio-labs-goalkeeper-scopes.yml
+  - type: Conventions
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: Idempotency
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: ErrorCatalog
+    url: errors/poggio-labs-goalkeeper-problem-types.yml
+  - type: DataModel
+    url: data-model/poggio-labs-goalkeeper-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/poggio-labs-goalkeeper-changelog.yml
+- aid: poggio-labs:poggio-labs-authentication-api
+  name: Poggio Labs Authentication API
+  description: User session lifecycle.
+  humanURL: https://poggio.io/docs/api
+  baseURL: https://api.poggio.io/v2
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/poggio-labs-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gkeeper.ai/
+  - type: APIReference
+    url: https://docs.gkeeper.ai/docs/api/rest-api
+  - type: GettingStarted
+    url: https://docs.gkeeper.ai/docs/getting-started
+  - type: SourceCode
+    url: https://github.com/poggiolabs/goalkeeper
+  - type: OAuthScopes
+    url: scopes/poggio-labs-goalkeeper-scopes.yml
+  - type: Conventions
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: Idempotency
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: ErrorCatalog
+    url: errors/poggio-labs-goalkeeper-problem-types.yml
+  - type: DataModel
+    url: data-model/poggio-labs-goalkeeper-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/poggio-labs-goalkeeper-changelog.yml
+- aid: poggio-labs:poggio-labs-goals-api
+  name: Poggio Labs Goals API
+  description: Organization goals and their label taxonomy.
+  humanURL: https://poggio.io/docs/api
+  baseURL: https://api.poggio.io/v2
+  tags:
+  - Goals
+  properties:
+  - type: OpenAPI
+    url: openapi/poggio-labs-goals-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gkeeper.ai/
+  - type: APIReference
+    url: https://docs.gkeeper.ai/docs/api/rest-api
+  - type: GettingStarted
+    url: https://docs.gkeeper.ai/docs/getting-started
+  - type: SourceCode
+    url: https://github.com/poggiolabs/goalkeeper
+  - type: OAuthScopes
+    url: scopes/poggio-labs-goalkeeper-scopes.yml
+  - type: Conventions
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: Idempotency
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: ErrorCatalog
+    url: errors/poggio-labs-goalkeeper-problem-types.yml
+  - type: DataModel
+    url: data-model/poggio-labs-goalkeeper-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/poggio-labs-goalkeeper-changelog.yml
+- aid: poggio-labs:poggio-labs-organizations-api
+  name: Poggio Labs Organizations API
+  description: Organization membership and active organization selection.
+  humanURL: https://poggio.io/docs/api
+  baseURL: https://api.poggio.io/v2
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/poggio-labs-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gkeeper.ai/
+  - type: APIReference
+    url: https://docs.gkeeper.ai/docs/api/rest-api
+  - type: GettingStarted
+    url: https://docs.gkeeper.ai/docs/getting-started
+  - type: SourceCode
+    url: https://github.com/poggiolabs/goalkeeper
+  - type: OAuthScopes
+    url: scopes/poggio-labs-goalkeeper-scopes.yml
+  - type: Conventions
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: Idempotency
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: ErrorCatalog
+    url: errors/poggio-labs-goalkeeper-problem-types.yml
+  - type: DataModel
+    url: data-model/poggio-labs-goalkeeper-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/poggio-labs-goalkeeper-changelog.yml
+- aid: poggio-labs:poggio-labs-system-api
+  name: Poggio Labs System API
+  description: Service status endpoints.
+  humanURL: https://poggio.io/docs/api
+  baseURL: https://api.poggio.io/v2
+  tags:
+  - System
+  properties:
+  - type: OpenAPI
+    url: openapi/poggio-labs-system-api-openapi.yml
+  - type: Documentation
+    url: https://docs.gkeeper.ai/
+  - type: APIReference
+    url: https://docs.gkeeper.ai/docs/api/rest-api
+  - type: GettingStarted
+    url: https://docs.gkeeper.ai/docs/getting-started
+  - type: SourceCode
+    url: https://github.com/poggiolabs/goalkeeper
+  - type: OAuthScopes
+    url: scopes/poggio-labs-goalkeeper-scopes.yml
+  - type: Conventions
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: Idempotency
+    url: conventions/poggio-labs-goalkeeper-conventions.yml
+  - type: ErrorCatalog
+    url: errors/poggio-labs-goalkeeper-problem-types.yml
+  - type: DataModel
+    url: data-model/poggio-labs-goalkeeper-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/poggio-labs-goalkeeper-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/poggio-labs-goalkeeper-changelog.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
