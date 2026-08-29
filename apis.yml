@@ -14,6 +14,19 @@ description: >-
   Goalkeeper, an Apache-2.0 self-hosted "durable goals" service for teams of people
   and AI agents, with its own OpenAPI 3.1 REST API and a stateless Streamable HTTP
   MCP server distributed as container images. Backed by Accel.
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: published
   onboarding: self-serve
