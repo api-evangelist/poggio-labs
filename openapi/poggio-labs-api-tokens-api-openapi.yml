@@ -1,0 +1,275 @@
+openapi: 3.2.0
+info:
+  title: Goalkeeper API Tokens API
+  version: 0.0.0
+  description: Public REST API.
+servers:
+- url: http://localhost:3001
+  description: Local development
+tags:
+- name: API Tokens
+  description: Scoped credentials owned by an organization and user.
+paths:
+  /v1/api-tokens:
+    get:
+      operationId: listApiTokens
+      summary: List API tokens
+      description: Lists active, unexpired API tokens for the current user and active organization.
+      tags:
+      - API Tokens
+      responses:
+        '200':
+          description: Active API tokens.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApiTokensResponse'
+        '401':
+          description: The request is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createApiToken
+      summary: Create an API token
+      description: Creates a scoped API token in the active organization and returns its secret once.
+      tags:
+      - API Tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApiTokenRequest'
+      responses:
+        '201':
+          description: The token and its one-time secret.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApiTokenResponse'
+        '400':
+          description: The token request is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: The request is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: The request origin is not allowed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/api-token-scopes:
+    get:
+      operationId: listApiTokenScopes
+      summary: List API token scopes
+      description: Returns the canonical API token scope registry.
+      tags:
+      - API Tokens
+      responses:
+        '200':
+          description: Available API token scopes and defaults.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApiTokenScopesResponse'
+  /v1/api-tokens/{tokenId}:
+    delete:
+      operationId: revokeApiToken
+      summary: Revoke an API token
+      description: Immediately revokes one of the current user's API tokens in the active organization.
+      tags:
+      - API Tokens
+      parameters:
+      - name: tokenId
+        in: path
+        required: true
+        description: API token identifier.
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: The revoked API token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevokeApiTokenResponse'
+        '401':
+          description: The request is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: The request origin is not allowed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: The API token does not exist for the current user and active organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    ApiTokenScopeDefinition:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - label
+      - description
+      - default
+      properties:
+        id:
+          $ref: '#/components/schemas/ApiTokenScope'
+        label:
+          type: string
+        description:
+          type: string
+        default:
+          type: boolean
+    CreateApiTokenResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      - secret
+      properties:
+        token:
+          $ref: '#/components/schemas/ApiToken'
+        secret:
+          type: string
+    ListApiTokenScopesResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - scopes
+      properties:
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiTokenScopeDefinition'
+    ApiTokenScope:
+      type: string
+      enum:
+      - goals:read
+      - goals:write
+      - goals:read:all
+      - goals:write:all
+      - labels:read
+      - labels:write
+    RevokeApiTokenResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      properties:
+        token:
+          $ref: '#/components/schemas/ApiToken'
+    CreateApiTokenRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - scopes
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        scopes:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/ApiTokenScope'
+        expiresInDays:
+          type: integer
+          minimum: 1
+          maximum: 365
+          default: 90
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+      - error
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    ListApiTokensResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - tokens
+      properties:
+        tokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiToken'
+    ApiToken:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - prefix
+      - scopes
+      - expiresAt
+      - lastUsedAt
+      - revokedAt
+      - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        prefix:
+          type: string
+        scopes:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/ApiTokenScope'
+        expiresAt:
+          type: string
+          format: date-time
+        lastUsedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+        revokedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+        createdAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: A Goalkeeper API token or provider-issued OAuth access token.
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: goalkeeper_session
