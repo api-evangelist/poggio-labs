@@ -102,7 +102,7 @@ apis:
   - Account Intelligence
   - Salesforce
   - Context
-  - SuperAgent
+  - Superagent
   tags_raw:
   - Account Intelligence
   - Salesforce
@@ -263,6 +263,8 @@ apis:
   humanURL: https://poggio.io/docs/api
   baseURL: https://api.poggio.io/v2
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
