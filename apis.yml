@@ -102,7 +102,7 @@ apis:
   - Account Intelligence
   - Salesforce
   - Context
-  - Superagent
+  - SuperAgent
   tags_raw:
   - Account Intelligence
   - Salesforce
@@ -329,6 +329,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: License
+  name: Apache-2.0
+  url: https://github.com/poggiolabs/goalkeeper/blob/main/LICENSE
 - type: AgenticAccess
   url: agentic-access/poggio-labs-agentic-access.yml
 - type: TrustCenter
