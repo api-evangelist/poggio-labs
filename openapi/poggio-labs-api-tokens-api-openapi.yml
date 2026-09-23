@@ -140,86 +140,6 @@ components:
           type: string
         default:
           type: boolean
-    CreateApiTokenResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - token
-      - secret
-      properties:
-        token:
-          $ref: '#/components/schemas/ApiToken'
-        secret:
-          type: string
-    ListApiTokenScopesResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - scopes
-      properties:
-        scopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiTokenScopeDefinition'
-    ApiTokenScope:
-      type: string
-      enum:
-      - goals:read
-      - goals:write
-      - goals:read:all
-      - goals:write:all
-      - labels:read
-      - labels:write
-    RevokeApiTokenResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - token
-      properties:
-        token:
-          $ref: '#/components/schemas/ApiToken'
-    CreateApiTokenRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      - scopes
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        scopes:
-          type: array
-          minItems: 1
-          uniqueItems: true
-          items:
-            $ref: '#/components/schemas/ApiTokenScope'
-        expiresInDays:
-          type: integer
-          minimum: 1
-          maximum: 365
-          default: 90
-    Error:
-      type: object
-      additionalProperties: false
-      required:
-      - error
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    ListApiTokensResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - tokens
-      properties:
-        tokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiToken'
     ApiToken:
       type: object
       additionalProperties: false
@@ -264,6 +184,86 @@ components:
         createdAt:
           type: string
           format: date-time
+    RevokeApiTokenResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      properties:
+        token:
+          $ref: '#/components/schemas/ApiToken'
+    CreateApiTokenRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - scopes
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        scopes:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/ApiTokenScope'
+        expiresInDays:
+          type: integer
+          minimum: 1
+          maximum: 365
+          default: 90
+    CreateApiTokenResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      - secret
+      properties:
+        token:
+          $ref: '#/components/schemas/ApiToken'
+        secret:
+          type: string
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+      - error
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    ApiTokenScope:
+      type: string
+      enum:
+      - goals:read
+      - goals:write
+      - goals:read:all
+      - goals:write:all
+      - labels:read
+      - labels:write
+    ListApiTokensResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - tokens
+      properties:
+        tokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiToken'
+    ListApiTokenScopesResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - scopes
+      properties:
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiTokenScopeDefinition'
   securitySchemes:
     bearerAuth:
       type: http

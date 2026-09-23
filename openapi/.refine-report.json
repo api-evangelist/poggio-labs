@@ -1,0 +1,28 @@
+{
+  "provider": "poggio-labs",
+  "sources": [
+    "_original/poggio-labs-goalkeeper-openapi.json"
+  ],
+  "outputs": [
+    "poggio-labs-api-tokens-api-openapi.yml",
+    "poggio-labs-authentication-api-openapi.yml",
+    "poggio-labs-goals-api-openapi.yml",
+    "poggio-labs-organizations-api-openapi.yml",
+    "poggio-labs-system-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "poggio-labs-goalkeeper-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "poggio-labs-api-tokens-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "poggio-labs-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "poggio-labs-goals-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "poggio-labs-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "poggio-labs-system-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
