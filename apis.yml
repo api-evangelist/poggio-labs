@@ -64,7 +64,7 @@ tags:
 - MCP
 - AI Agents
 - Enterprise
-- Open-Source
+- Open Source
 - Goals
 - Gong
 - Slack
@@ -83,6 +83,7 @@ tags_raw:
 - Goals
 - Gong
 - Slack
+- Open-Source
 apis:
 - name: Poggio REST API v2
   description: Versioned REST API (v2) exposing Poggio account intelligence, context search, account digests,
@@ -138,12 +139,13 @@ apis:
   - MCP
   - AI Agents
   - Goals
-  - Open-Source
+  - Open Source
   tags_raw:
   - MCP
   - AI Agents
   - Goals
   - Open Source
+  - Open-Source
   properties:
   - type: MCPServer
     url: mcp/poggio-labs-goalkeeper-mcp.yml
