@@ -215,6 +215,49 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    AuthSession:
+      type: object
+      additionalProperties: false
+      required:
+      - user
+      - activeOrganizationId
+      - organizations
+      properties:
+        user:
+          $ref: '#/components/schemas/AuthUser'
+        activeOrganizationId:
+          type: string
+          format: uuid
+        organizations:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OrganizationSummary'
+    AuthTransitionResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - redirectTo
+      properties:
+        redirectTo:
+          type: string
+          format: uri
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+      - error
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    OrganizationRole:
+      type: string
+      enum:
+      - owner
+      - admin
+      - member
     EmailVerificationRequest:
       type: object
       additionalProperties: false
@@ -224,21 +267,42 @@ components:
         token:
           type: string
           minLength: 1
-    AuthUser:
+    EmailLoginRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      - password
+      - returnTo
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          minLength: 12
+          maxLength: 512
+        returnTo:
+          type: string
+          format: uri
+    OrganizationSummary:
       type: object
       additionalProperties: false
       required:
       - id
-      - displayName
-      - email
+      - name
+      - role
       properties:
         id:
           type: string
-        displayName:
+          format: uuid
+        name:
           type: string
-        email:
-          type: string
-          format: email
+          minLength: 1
+          maxLength: 100
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
     EmailRegistrationRequest:
       type: object
       additionalProperties: false
@@ -259,24 +323,17 @@ components:
           type: string
           minLength: 1
           maxLength: 100
-    AuthSession:
+    AuthConfiguration:
       type: object
       additionalProperties: false
       required:
-      - user
-      - activeOrganizationId
-      - organizations
+      - method
       properties:
-        user:
-          $ref: '#/components/schemas/AuthUser'
-        activeOrganizationId:
+        method:
           type: string
-          format: uuid
-        organizations:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/OrganizationSummary'
+          enum:
+          - redirect
+          - email
     EmailRegistrationResponse:
       type: object
       additionalProperties: false
@@ -290,78 +347,21 @@ components:
         email:
           type: string
           format: email
-    OrganizationRole:
-      type: string
-      enum:
-      - owner
-      - admin
-      - member
-    AuthTransitionResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - redirectTo
-      properties:
-        redirectTo:
-          type: string
-          format: uri
-    Error:
-      type: object
-      additionalProperties: false
-      required:
-      - error
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    EmailLoginRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - email
-      - password
-      - returnTo
-      properties:
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        password:
-          type: string
-          minLength: 12
-          maxLength: 512
-        returnTo:
-          type: string
-          format: uri
-    AuthConfiguration:
-      type: object
-      additionalProperties: false
-      required:
-      - method
-      properties:
-        method:
-          type: string
-          enum:
-          - redirect
-          - email
-    OrganizationSummary:
+    AuthUser:
       type: object
       additionalProperties: false
       required:
       - id
-      - name
-      - role
+      - displayName
+      - email
       properties:
         id:
           type: string
-          format: uuid
-        name:
+        displayName:
           type: string
-          minLength: 1
-          maxLength: 100
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
+        email:
+          type: string
+          format: email
   securitySchemes:
     bearerAuth:
       type: http

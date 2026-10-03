@@ -409,96 +409,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ListOrganizationInvitationsResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - invitations
-      properties:
-        invitations:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrganizationInvitation'
-    IssuedOrganizationInvitation:
-      type: object
-      additionalProperties: false
-      required:
-      - invitation
-      - acceptUrl
-      - emailSent
-      properties:
-        invitation:
-          $ref: '#/components/schemas/OrganizationInvitation'
-        acceptUrl:
-          type: string
-          description: Single-use acceptance link. Returned only here; the token is stored hashed and cannot be recovered. Use the resend operation to issue a replacement.
-        emailSent:
-          type: boolean
-          description: False when no mailer is configured or delivery failed. The invitation is still valid and the link above can be shared directly.
-    UpdateOrganizationMemberRoleRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - role
-      properties:
-        role:
-          type: string
-          enum:
-          - admin
-          - member
-    CreateOrganizationRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-    OrganizationContext:
-      type: object
-      additionalProperties: false
-      required:
-      - activeOrganizationId
-      - organizations
-      properties:
-        activeOrganizationId:
-          type: string
-          format: uuid
-        organizations:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/OrganizationSummary'
-    InvitableOrganizationRole:
-      type: string
-      enum:
-      - admin
-      - member
-    SwitchOrganizationRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - organizationId
-      properties:
-        organizationId:
-          type: string
-          format: uuid
-    OrganizationRole:
-      type: string
-      enum:
-      - owner
-      - admin
-      - member
-    UpdateOrganizationMemberRoleResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - member
-      properties:
-        member:
-          $ref: '#/components/schemas/OrganizationMember'
     Error:
       type: object
       additionalProperties: false
@@ -509,6 +419,68 @@ components:
           type: string
         message:
           type: string
+    InvitableOrganizationRole:
+      type: string
+      enum:
+      - admin
+      - member
+    OrganizationRole:
+      type: string
+      enum:
+      - owner
+      - admin
+      - member
+    ListOrganizationInvitationsResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - invitations
+      properties:
+        invitations:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationInvitation'
+    CreateOrganizationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+    OrganizationMember:
+      type: object
+      additionalProperties: false
+      required:
+      - userId
+      - displayName
+      - email
+      - role
+      properties:
+        userId:
+          type: string
+          minLength: 1
+        displayName:
+          type: string
+          minLength: 1
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+    SwitchOrganizationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - organizationId
+      properties:
+        organizationId:
+          type: string
+          format: uuid
     OrganizationInvitation:
       type: object
       additionalProperties: false
@@ -545,6 +517,54 @@ components:
         createdAt:
           type: string
           format: date-time
+    OrganizationSummary:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - role
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+    AcceptOrganizationInvitationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      properties:
+        token:
+          type: string
+          minLength: 1
+          maxLength: 200
+    CreateOrganizationInvitationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      - role
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 320
+        role:
+          $ref: '#/components/schemas/InvitableOrganizationRole'
+    UpdateOrganizationMemberRoleResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - member
+      properties:
+        member:
+          $ref: '#/components/schemas/OrganizationMember'
     AcceptOrganizationInvitationResponse:
       type: object
       additionalProperties: false
@@ -567,6 +587,31 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/OrganizationSummary'
+    UpdateOrganizationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+    OrganizationContext:
+      type: object
+      additionalProperties: false
+      required:
+      - activeOrganizationId
+      - organizations
+      properties:
+        activeOrganizationId:
+          type: string
+          format: uuid
+        organizations:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OrganizationSummary'
     ListOrganizationMembersResponse:
       type: object
       additionalProperties: false
@@ -578,78 +623,33 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/OrganizationMember'
-    CreateOrganizationInvitationRequest:
+    IssuedOrganizationInvitation:
       type: object
       additionalProperties: false
       required:
-      - email
+      - invitation
+      - acceptUrl
+      - emailSent
+      properties:
+        invitation:
+          $ref: '#/components/schemas/OrganizationInvitation'
+        acceptUrl:
+          type: string
+          description: Single-use acceptance link. Returned only here; the token is stored hashed and cannot be recovered. Use the resend operation to issue a replacement.
+        emailSent:
+          type: boolean
+          description: False when no mailer is configured or delivery failed. The invitation is still valid and the link above can be shared directly.
+    UpdateOrganizationMemberRoleRequest:
+      type: object
+      additionalProperties: false
+      required:
       - role
       properties:
-        email:
-          type: string
-          format: email
-          maxLength: 320
         role:
-          $ref: '#/components/schemas/InvitableOrganizationRole'
-    UpdateOrganizationRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        name:
           type: string
-          minLength: 1
-          maxLength: 100
-    OrganizationMember:
-      type: object
-      additionalProperties: false
-      required:
-      - userId
-      - displayName
-      - email
-      - role
-      properties:
-        userId:
-          type: string
-          minLength: 1
-        displayName:
-          type: string
-          minLength: 1
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
-    AcceptOrganizationInvitationRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - token
-      properties:
-        token:
-          type: string
-          minLength: 1
-          maxLength: 200
-    OrganizationSummary:
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - role
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
+          enum:
+          - admin
+          - member
   securitySchemes:
     bearerAuth:
       type: http

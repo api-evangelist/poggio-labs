@@ -665,6 +665,91 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    PublishedGoalTimeframe:
+      oneOf:
+      - type: object
+        additionalProperties: false
+        required:
+        - kind
+        properties:
+          kind:
+            const: continuous
+      - type: object
+        additionalProperties: false
+        required:
+        - kind
+        - targetDate
+        properties:
+          kind:
+            const: deadline
+          targetDate:
+            type: string
+            format: date
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+      - error
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    GoalLabel:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - organizationId
+      - name
+      - color
+      - description
+      - createdAt
+      - createdByUserId
+      - updatedAt
+      - updatedByUserId
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizationId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        color:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 32
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 500
+        createdAt:
+          type: string
+          format: date-time
+        createdByUserId:
+          type: string
+          minLength: 1
+        updatedAt:
+          type: string
+          format: date-time
+        updatedByUserId:
+          type: string
+          minLength: 1
+    GoalStatus:
+      type: string
+      enum:
+      - active
+      - completed
+      - paused
+      - archived
     GoalActor:
       oneOf:
       - type: object
@@ -716,122 +801,12 @@ components:
             - 'null'
             minLength: 1
             maxLength: 200
-    GoalLabelResponse:
+    CreateGoalRequest:
       type: object
       additionalProperties: false
       required:
-      - label
-      properties:
-        label:
-          $ref: '#/components/schemas/GoalLabel'
-    PublishedGoalTimeframe:
-      oneOf:
-      - type: object
-        additionalProperties: false
-        required:
-        - kind
-        properties:
-          kind:
-            const: continuous
-      - type: object
-        additionalProperties: false
-        required:
-        - kind
-        - targetDate
-        properties:
-          kind:
-            const: deadline
-          targetDate:
-            type: string
-            format: date
-    GoalEvaluationResult:
-      type: string
-      enum:
-      - met
-      - not_met
-      - unknown
-    GoalTimeframe:
-      oneOf:
-      - type: object
-        additionalProperties: false
-        required:
-        - kind
-        properties:
-          kind:
-            const: unspecified
-      - type: object
-        additionalProperties: false
-        required:
-        - kind
-        properties:
-          kind:
-            const: continuous
-      - type: object
-        additionalProperties: false
-        required:
-        - kind
-        - targetDate
-        properties:
-          kind:
-            const: deadline
-          targetDate:
-            type: string
-            format: date
-    UpdateGoalLabelRequest:
-      type: object
-      additionalProperties: false
-      minProperties: 1
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-        color:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 32
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 500
-    GoalUpdateResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - update
-      properties:
-        update:
-          $ref: '#/components/schemas/GoalUpdate'
-    CreateGoalLabelRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-        color:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 32
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 500
-    UpdateGoalRequest:
-      type: object
-      additionalProperties: false
-      minProperties: 1
+      - detailedDescription
+      - timeframe
       properties:
         title:
           type: string
@@ -842,7 +817,7 @@ components:
           minLength: 1
           description: A long-form description that may contain Markdown.
         timeframe:
-          $ref: '#/components/schemas/GoalTimeframe'
+          $ref: '#/components/schemas/PublishedGoalTimeframe'
         ownerUserId:
           type:
           - string
@@ -861,23 +836,107 @@ components:
           maxItems: 100
           items:
             $ref: '#/components/schemas/GoalCriterion'
-    Error:
+    GoalClientInfo:
       type: object
       additionalProperties: false
       required:
-      - error
+      - name
+      - version
       properties:
-        error:
+        name:
           type: string
-        message:
+          minLength: 1
+          maxLength: 200
+        version:
           type: string
-    GoalStatus:
-      type: string
-      enum:
-      - active
-      - completed
-      - paused
-      - archived
+          minLength: 1
+          maxLength: 100
+    GoalResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - goal
+      properties:
+        goal:
+          $ref: '#/components/schemas/Goal'
+    GoalCriterion:
+      type: object
+      additionalProperties: false
+      required:
+      - title
+      - description
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+          maxLength: 10000
+    ListGoalUpdatesResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - updates
+      properties:
+        updates:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoalUpdate'
+    CreateGoalUpdateRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - summary
+      - details
+      - expectedRevision
+      - idempotencyKey
+      properties:
+        status:
+          $ref: '#/components/schemas/GoalStatus'
+        health:
+          anyOf:
+          - $ref: '#/components/schemas/GoalHealth'
+          - type: 'null'
+          description: A newly reported health value. Omit or send null to retain the current health; completed and archived statuses clear it.
+        evaluation:
+          anyOf:
+          - $ref: '#/components/schemas/GoalEvaluation'
+          - type: 'null'
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 500
+        details:
+          type: string
+          minLength: 1
+        expectedRevision:
+          type: integer
+          minimum: 1
+        idempotencyKey:
+          type: string
+          minLength: 1
+          maxLength: 200
+    GoalLabelResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - label
+      properties:
+        label:
+          $ref: '#/components/schemas/GoalLabel'
+    ListGoalLabelsResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - labels
+      properties:
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoalLabel'
     GoalUpdate:
       type: object
       additionalProperties: false
@@ -946,137 +1005,39 @@ components:
         createdAt:
           type: string
           format: date-time
-    CreateGoalRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - detailedDescription
-      - timeframe
-      properties:
-        title:
-          type: string
-          minLength: 1
-          maxLength: 200
-        detailedDescription:
-          type: string
-          minLength: 1
-          description: A long-form description that may contain Markdown.
-        timeframe:
-          $ref: '#/components/schemas/PublishedGoalTimeframe'
-        ownerUserId:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 200
-        labelIds:
-          type: array
-          maxItems: 20
-          uniqueItems: true
-          items:
+    GoalHealth:
+      type: string
+      enum:
+      - on_track
+      - at_risk
+      - off_track
+    GoalTimeframe:
+      oneOf:
+      - type: object
+        additionalProperties: false
+        required:
+        - kind
+        properties:
+          kind:
+            const: unspecified
+      - type: object
+        additionalProperties: false
+        required:
+        - kind
+        properties:
+          kind:
+            const: continuous
+      - type: object
+        additionalProperties: false
+        required:
+        - kind
+        - targetDate
+        properties:
+          kind:
+            const: deadline
+          targetDate:
             type: string
-            format: uuid
-        criteria:
-          type: array
-          maxItems: 100
-          items:
-            $ref: '#/components/schemas/GoalCriterion'
-    GoalCriterion:
-      type: object
-      additionalProperties: false
-      required:
-      - title
-      - description
-      properties:
-        title:
-          type: string
-          minLength: 1
-          maxLength: 200
-        description:
-          type: string
-          minLength: 1
-          maxLength: 10000
-    GoalClientInfo:
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      - version
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 200
-        version:
-          type: string
-          minLength: 1
-          maxLength: 100
-    GoalEvaluation:
-      type: object
-      additionalProperties: false
-      required:
-      - result
-      - asOf
-      properties:
-        result:
-          $ref: '#/components/schemas/GoalEvaluationResult'
-        asOf:
-          type: string
-          format: date-time
-    CreateGoalUpdateRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - status
-      - summary
-      - details
-      - expectedRevision
-      - idempotencyKey
-      properties:
-        status:
-          $ref: '#/components/schemas/GoalStatus'
-        health:
-          anyOf:
-          - $ref: '#/components/schemas/GoalHealth'
-          - type: 'null'
-          description: A newly reported health value. Omit or send null to retain the current health; completed and archived statuses clear it.
-        evaluation:
-          anyOf:
-          - $ref: '#/components/schemas/GoalEvaluation'
-          - type: 'null'
-        summary:
-          type: string
-          minLength: 1
-          maxLength: 500
-        details:
-          type: string
-          minLength: 1
-        expectedRevision:
-          type: integer
-          minimum: 1
-        idempotencyKey:
-          type: string
-          minLength: 1
-          maxLength: 200
-    GoalAuthentication:
-      type: object
-      additionalProperties: false
-      required:
-      - kind
-      - subjectId
-      properties:
-        kind:
-          type: string
-          enum:
-          - session
-          - api_token
-          - oauth
-          - unknown
-        subjectId:
-          type:
-          - string
-          - 'null'
-          minLength: 1
+            format: date
     Goal:
       type: object
       additionalProperties: false
@@ -1165,54 +1126,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Goal'
-    ListGoalUpdatesResponse:
+    GoalEvaluation:
       type: object
       additionalProperties: false
       required:
-      - updates
+      - result
+      - asOf
       properties:
-        updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/GoalUpdate'
-    ListGoalLabelsResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - labels
-      properties:
-        labels:
-          type: array
-          items:
-            $ref: '#/components/schemas/GoalLabel'
-    GoalResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - goal
-      properties:
-        goal:
-          $ref: '#/components/schemas/Goal'
-    GoalLabel:
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      - organizationId
-      - name
-      - color
-      - description
-      - createdAt
-      - createdByUserId
-      - updatedAt
-      - updatedByUserId
-      properties:
-        id:
+        result:
+          $ref: '#/components/schemas/GoalEvaluationResult'
+        asOf:
           type: string
-          format: uuid
-        organizationId:
-          type: string
-          format: uuid
+          format: date-time
+    GoalUpdateResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - update
+      properties:
+        update:
+          $ref: '#/components/schemas/GoalUpdate'
+    UpdateGoalLabelRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
         name:
           type: string
           minLength: 1
@@ -1229,24 +1167,86 @@ components:
           - 'null'
           minLength: 1
           maxLength: 500
-        createdAt:
-          type: string
-          format: date-time
-        createdByUserId:
-          type: string
-          minLength: 1
-        updatedAt:
-          type: string
-          format: date-time
-        updatedByUserId:
+    UpdateGoalRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        title:
           type: string
           minLength: 1
-    GoalHealth:
+          maxLength: 200
+        detailedDescription:
+          type: string
+          minLength: 1
+          description: A long-form description that may contain Markdown.
+        timeframe:
+          $ref: '#/components/schemas/GoalTimeframe'
+        ownerUserId:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 200
+        labelIds:
+          type: array
+          maxItems: 20
+          uniqueItems: true
+          items:
+            type: string
+            format: uuid
+        criteria:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/GoalCriterion'
+    CreateGoalLabelRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        color:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 32
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 500
+    GoalAuthentication:
+      type: object
+      additionalProperties: false
+      required:
+      - kind
+      - subjectId
+      properties:
+        kind:
+          type: string
+          enum:
+          - session
+          - api_token
+          - oauth
+          - unknown
+        subjectId:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+    GoalEvaluationResult:
       type: string
       enum:
-      - on_track
-      - at_risk
-      - off_track
+      - met
+      - not_met
+      - unknown
   securitySchemes:
     bearerAuth:
       type: http
