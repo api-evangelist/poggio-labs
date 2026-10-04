@@ -321,6 +321,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/poggio-labs-capability-edges.yml
+  name: Poggio Labs Business Capability Map
 - type: License
   name: Apache-2.0
   url: https://github.com/poggiolabs/goalkeeper/blob/main/LICENSE
