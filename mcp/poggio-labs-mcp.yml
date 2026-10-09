@@ -69,3 +69,17 @@ deployment:
       The live tool schemas are auth-gated. The tools[] list above is the provider's own
       published catalog from https://poggio.io/docs/mcp/tool-specs — names, descriptions and
       parameters as documented; full inputSchemas would require authenticated introspection.
+rfc9728:
+  endpoint: https://mcp.poggio.io/mcp
+  metadata_url: https://mcp.poggio.io/.well-known/oauth-protected-resource/mcp
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://mcp.poggio.io/mcp
+    authorization_servers:
+    - https://api.poggio.io/
+    scopes_supported: []
+    bearer_methods_supported:
+    - header
